@@ -1,0 +1,1195 @@
+# Vue.js Framework Comprehensive Documentation
+
+## Table of Contents
+1. [Vue Instance and Core Concepts](#vue-instance-and-core-concepts)
+2. [Dynamic Methods](#dynamic-methods)
+3. [Component System](#component-system)
+4. [Reactivity System](#reactivity-system)
+5. [Lifecycle Hooks](#lifecycle-hooks)
+6. [Template Syntax and Directives](#template-syntax-and-directives)
+7. [Event Handling](#event-handling)
+8. [Form Input Bindings](#form-input-bindings)
+9. [Computed Properties and Watchers](#computed-properties-and-watchers)
+10. [Component Communication](#component-communication)
+11. [Slots and Content Distribution](#slots-and-content-distribution)
+12. [Mixins and Composition](#mixins-and-composition)
+13. [Custom Directives](#custom-directives)
+14. [Transitions and Animations](#transitions-and-animations)
+15. [Vue Router](#vue-router)
+16. [State Management (Vuex/Pinia)](#state-management)
+17. [Testing](#testing)
+18. [Performance Optimization](#performance-optimization)
+
+---
+
+## Vue Instance and Core Concepts
+
+### Creating Vue Applications
+
+#### Vue 3 (Composition API)
+```javascript
+import { createApp } from 'vue'
+
+const app = createApp({
+  data() {
+    return {
+      message: 'Hello Vue!'
+    }
+  }
+})
+
+app.mount('#app')
+```
+
+#### Vue 2 (Options API)
+```javascript
+new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+```
+
+### Application Configuration
+```javascript
+const app = createApp({})
+
+// Global properties
+app.config.globalProperties.$http = axios
+app.config.globalProperties.$translate = (key) => {
+  return key.split('.').reduce((o, i) => o[i], i18n)
+}
+
+// Global components
+app.component('MyComponent', {
+  /* component definition */
+})
+
+// Global directives
+app.directive('focus', {
+  mounted(el) {
+    el.focus()
+  }
+})
+```
+
+---
+
+## Dynamic Methods
+
+### Dynamic Method Creation and Execution
+
+#### 1. Dynamic Method Names
+```javascript
+export default {
+  data() {
+    return {
+      methodName: 'handleClick',
+      dynamicMethods: {}
+    }
+  },
+  methods: {
+    // Static method
+    handleClick() {
+      console.log('Static method called')
+    },
+    
+    // Dynamic method creation
+    createDynamicMethod(name, implementation) {
+      this.dynamicMethods[name] = implementation
+      this.$forceUpdate() // Force re-render if needed
+    },
+    
+    // Execute dynamic method
+    executeDynamicMethod(methodName, ...args) {
+      if (this.dynamicMethods[methodName]) {
+        return this.dynamicMethods[methodName].apply(this, args)
+      }
+      console.warn(`Method ${methodName} not found`)
+    },
+    
+    // Dynamic method binding
+    bindMethod(methodName) {
+      return this[methodName].bind(this)
+    }
+  },
+  
+  mounted() {
+    // Create dynamic methods at runtime
+    this.createDynamicMethod('dynamicGreeting', function(name) {
+      return `Hello, ${name}!`
+    })
+    
+    // Execute dynamic method
+    console.log(this.executeDynamicMethod('dynamicGreeting', 'World'))
+  }
+}
+```
+
+#### 2. Method Factories
+```javascript
+export default {
+  methods: {
+    // Method factory for creating CRUD operations
+    createCrudMethods(resource) {
+      const methods = {}
+      
+      methods[`create${resource}`] = function(data) {
+        return this.$http.post(`/api/${resource.toLowerCase()}`, data)
+      }
+      
+      methods[`get${resource}`] = function(id) {
+        return this.$http.get(`/api/${resource.toLowerCase()}/${id}`)
+      }
+      
+      methods[`update${resource}`] = function(id, data) {
+        return this.$http.put(`/api/${resource.toLowerCase()}/${id}`, data)
+      }
+      
+      methods[`delete${resource}`] = function(id) {
+        return this.$http.delete(`/api/${resource.toLowerCase()}/${id}`)
+      }
+      
+      // Bind methods to component instance
+      Object.keys(methods).forEach(methodName => {
+        this[methodName] = methods[methodName].bind(this)
+      })
+    },
+    
+    // Event handler factory
+    createEventHandler(eventType, callback) {
+      return (event) => {
+        console.log(`Handling ${eventType}:`, event)
+        if (typeof callback === 'function') {
+          callback.call(this, event)
+        }
+      }
+    }
+  },
+  
+  created() {
+    // Generate CRUD methods for User resource
+    this.createCrudMethods('User')
+    
+    // Now you can use: this.createUser(), this.getUser(), etc.
+  }
+}
+```
+
+#### 3. Dynamic Method Composition
+```javascript
+export default {
+  data() {
+    return {
+      middlewares: [],
+      finalMethods: {}
+    }
+  },
+  
+  methods: {
+    // Add middleware to method chain
+    addMiddleware(middleware) {
+      this.middlewares.push(middleware)
+    },
+    
+    // Compose method with middlewares
+    composeMethod(originalMethod) {
+      return (...args) => {
+        let result = args
+        
+        // Apply middlewares in sequence
+        for (const middleware of this.middlewares) {
+          result = middleware.apply(this, result)
+          if (result === false) break // Allow middleware to stop execution
+        }
+        
+        // Execute original method if not stopped
+        if (result !== false) {
+          return originalMethod.apply(this, Array.isArray(result) ? result : args)
+        }
+      }
+    },
+    
+    // Original business method
+    processData(data) {
+      console.log('Processing:', data)
+      return data.map(item => item.toUpperCase())
+    },
+    
+    // Logging middleware
+    loggingMiddleware(...args) {
+      console.log('Method called with args:', args)
+      return args
+    },
+    
+    // Validation middleware
+    validationMiddleware(...args) {
+      if (!args[0] || !Array.isArray(args[0])) {
+        console.error('Invalid data provided')
+        return false // Stop execution
+      }
+      return args
+    }
+  },
+  
+  created() {
+    // Setup middlewares
+    this.addMiddleware(this.loggingMiddleware)
+    this.addMiddleware(this.validationMiddleware)
+    
+    // Compose enhanced method
+    this.enhancedProcessData = this.composeMethod(this.processData)
+  }
+}
+```
+
+### Advanced Dynamic Method Patterns
+
+#### 4. Reactive Method Registry
+```javascript
+import { reactive, computed } from 'vue'
+
+export default {
+  setup() {
+    const methodRegistry = reactive({
+      handlers: {},
+      interceptors: []
+    })
+    
+    const registerMethod = (name, handler) => {
+      methodRegistry.handlers[name] = handler
+    }
+    
+    const addInterceptor = (interceptor) => {
+      methodRegistry.interceptors.push(interceptor)
+    }
+    
+    const executeMethod = (name, ...args) => {
+      let handler = methodRegistry.handlers[name]
+      if (!handler) return null
+      
+      // Apply interceptors
+      for (const interceptor of methodRegistry.interceptors) {
+        const result = interceptor(name, args, handler)
+        if (result !== undefined) {
+          handler = result
+        }
+      }
+      
+      return handler(...args)
+    }
+    
+    // Computed property for available methods
+    const availableMethods = computed(() => {
+      return Object.keys(methodRegistry.handlers)
+    })
+    
+    return {
+      registerMethod,
+      addInterceptor,
+      executeMethod,
+      availableMethods
+    }
+  }
+}
+```
+
+---
+
+## Component System
+
+### Component Definition and Registration
+
+#### 1. Global Component Registration
+```javascript
+// Vue 3
+import { createApp } from 'vue'
+import MyComponent from './components/MyComponent.vue'
+
+const app = createApp({})
+app.component('MyComponent', MyComponent)
+
+// Vue 2
+import Vue from 'vue'
+import MyComponent from './components/MyComponent.vue'
+
+Vue.component('MyComponent', MyComponent)
+```
+
+#### 2. Local Component Registration
+```javascript
+// Single File Component
+<template>
+  <div>
+    <child-component :prop="value" @event="handleEvent" />
+  </div>
+</template>
+
+<script>
+import ChildComponent from './ChildComponent.vue'
+
+export default {
+  name: 'ParentComponent',
+  components: {
+    ChildComponent
+  },
+  data() {
+    return {
+      value: 'Hello'
+    }
+  },
+  methods: {
+    handleEvent(payload) {
+      console.log('Event received:', payload)
+    }
+  }
+}
+</script>
+```
+
+#### 3. Dynamic Component Loading
+```javascript
+<template>
+  <div>
+    <!-- Dynamic component -->
+    <component :is="currentComponent" v-bind="componentProps" />
+    
+    <!-- Async component with loading state -->
+    <Suspense>
+      <template #default>
+        <AsyncComponent />
+      </template>
+      <template #fallback>
+        <div>Loading...</div>
+      </template>
+    </Suspense>
+  </div>
+</template>
+
+<script>
+import { defineAsyncComponent } from 'vue'
+
+export default {
+  components: {
+    // Async component with options
+    AsyncComponent: defineAsyncComponent({
+      loader: () => import('./HeavyComponent.vue'),
+      loadingComponent: LoadingComponent,
+      errorComponent: ErrorComponent,
+      delay: 200,
+      timeout: 3000
+    })
+  },
+  
+  data() {
+    return {
+      currentComponent: 'ComponentA',
+      componentProps: {
+        title: 'Dynamic Props'
+      }
+    }
+  },
+  
+  methods: {
+    switchComponent(componentName) {
+      this.currentComponent = componentName
+    }
+  }
+}
+</script>
+```
+
+### Advanced Component Patterns
+
+#### 4. Higher-Order Components (HOC)
+```javascript
+// HOC Factory
+function withLoading(WrappedComponent) {
+  return {
+    name: `WithLoading${WrappedComponent.name}`,
+    props: {
+      loading: {
+        type: Boolean,
+        default: false
+      }
+    },
+    render() {
+      if (this.loading) {
+        return this.$createElement('div', 'Loading...')
+      }
+      
+      return this.$createElement(WrappedComponent, {
+        props: this.$props,
+        attrs: this.$attrs,
+        on: this.$listeners
+      }, this.$slots.default)
+    }
+  }
+}
+
+// Usage
+export default {
+  components: {
+    EnhancedComponent: withLoading(MyComponent)
+  }
+}
+```
+
+#### 5. Render Functions and JSX
+```javascript
+export default {
+  name: 'FunctionalComponent',
+  functional: true, // Vue 2 functional component
+  
+  render(h, context) {
+    const { props, children, data } = context
+    
+    return h('div', {
+      class: ['functional-component', props.additionalClass],
+      style: {
+        color: props.textColor
+      },
+      on: {
+        click: () => props.onClick && props.onClick()
+      }
+    }, children)
+  }
+}
+
+// Vue 3 Functional Component
+import { h } from 'vue'
+
+export default function FunctionalComponent(props, { slots, emit }) {
+  return h('div', {
+    class: ['functional-component', props.additionalClass],
+    style: {
+      color: props.textColor
+    },
+    onClick: () => emit('click')
+  }, slots.default())
+}
+```
+
+#### 6. Component Composition with Mixins
+```javascript
+// Mixin definition
+const ApiMixin = {
+  data() {
+    return {
+      loading: false,
+      error: null
+    }
+  },
+  
+  methods: {
+    async apiCall(endpoint, options = {}) {
+      this.loading = true
+      this.error = null
+      
+      try {
+        const response = await fetch(endpoint, options)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        return await response.json()
+      } catch (error) {
+        this.error = error.message
+        throw error
+      } finally {
+        this.loading = false
+      }
+    }
+  }
+}
+
+// Component using mixin
+export default {
+  mixins: [ApiMixin],
+  
+  data() {
+    return {
+      users: []
+    }
+  },
+  
+  async created() {
+    try {
+      this.users = await this.apiCall('/api/users')
+    } catch (error) {
+      console.error('Failed to load users:', error)
+    }
+  }
+}
+```
+
+---
+
+## Reactivity System
+
+### Vue 3 Composition API Reactivity
+
+#### 1. Reactive References
+```javascript
+import { ref, reactive, computed, watch, watchEffect } from 'vue'
+
+export default {
+  setup() {
+    // Primitive reactivity
+    const count = ref(0)
+    const message = ref('Hello')
+    
+    // Object reactivity
+    const user = reactive({
+      name: 'John',
+      age: 30,
+      preferences: {
+        theme: 'dark',
+        notifications: true
+      }
+    })
+    
+    // Computed properties
+    const doubleCount = computed(() => count.value * 2)
+    const userDisplay = computed(() => `${user.name} (${user.age})`)
+    
+    // Watchers
+    watch(count, (newValue, oldValue) => {
+      console.log(`Count changed from ${oldValue} to ${newValue}`)
+    })
+    
+    // Watch multiple sources
+    watch([count, message], ([newCount, newMessage], [oldCount, oldMessage]) => {
+      console.log('Multiple values changed')
+    })
+    
+    // Watch with options
+    watch(
+      () => user.preferences.theme,
+      (newTheme) => {
+        document.body.className = `theme-${newTheme}`
+      },
+      { immediate: true, deep: true }
+    )
+    
+    // Watch effect - automatically tracks dependencies
+    watchEffect(() => {
+      console.log(`User ${user.name} has count ${count.value}`)
+    })
+    
+    // Methods
+    const increment = () => {
+      count.value++
+    }
+    
+    const updateUser = (updates) => {
+      Object.assign(user, updates)
+    }
+    
+    return {
+      count,
+      message,
+      user,
+      doubleCount,
+      userDisplay,
+      increment,
+      updateUser
+    }
+  }
+}
+```
+
+#### 2. Advanced Reactivity Patterns
+```javascript
+import { 
+  ref, reactive, computed, watch, 
+  toRefs, toRef, unref, isRef, 
+  readonly, shallowRef, shallowReactive,
+  customRef, triggerRef, markRaw
+} from 'vue'
+
+export default {
+  setup() {
+    // Shallow reactivity (only top-level properties are reactive)
+    const shallowState = shallowReactive({
+      nested: { count: 0 } // This won't be reactive
+    })
+    
+    // Readonly wrapper
+    const readonlyState = readonly(reactive({ value: 42 }))
+    
+    // Custom ref with getter/setter logic
+    const customCounter = customRef((track, trigger) => {
+      let value = 0
+      return {
+        get() {
+          track() // Track dependency
+          return value
+        },
+        set(newValue) {
+          if (newValue !== value) {
+            value = newValue
+            trigger() // Trigger update
+          }
+        }
+      }
+    })
+    
+    // Debounced ref
+    const debouncedRef = (value, delay = 300) => {
+      let timeout
+      return customRef((track, trigger) => {
+        return {
+          get() {
+            track()
+            return value
+          },
+          set(newValue) {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+              value = newValue
+              trigger()
+            }, delay)
+          }
+        }
+      })
+    }
+    
+    const debouncedInput = debouncedRef('')
+    
+    // Convert reactive object to refs
+    const state = reactive({ x: 1, y: 2 })
+    const stateAsRefs = toRefs(state)
+    // Now stateAsRefs.x and stateAsRefs.y are refs
+    
+    return {
+      shallowState,
+      readonlyState,
+      customCounter,
+      debouncedInput,
+      ...stateAsRefs
+    }
+  }
+}
+```
+
+### Vue 2 Reactivity System
+
+#### 3. Data, Computed, and Watchers
+```javascript
+export default {
+  data() {
+    return {
+      // Reactive data
+      items: [],
+      filters: {
+        search: '',
+        category: 'all',
+        sortBy: 'name'
+      },
+      loading: false
+    }
+  },
+  
+  computed: {
+    // Simple computed property
+    itemCount() {
+      return this.items.length
+    },
+    
+    // Computed with getter and setter
+    searchTerm: {
+      get() {
+        return this.filters.search
+      },
+      set(value) {
+        this.filters.search = value
+        this.debouncedSearch()
+      }
+    },
+    
+    // Complex computed property
+    filteredItems() {
+      let filtered = this.items
+      
+      // Apply search filter
+      if (this.filters.search) {
+        const search = this.filters.search.toLowerCase()
+        filtered = filtered.filter(item => 
+          item.name.toLowerCase().includes(search) ||
+          item.description.toLowerCase().includes(search)
+        )
+      }
+      
+      // Apply category filter
+      if (this.filters.category !== 'all') {
+        filtered = filtered.filter(item => item.category === this.filters.category)
+      }
+      
+      // Apply sorting
+      filtered.sort((a, b) => {
+        const aValue = a[this.filters.sortBy]
+        const bValue = b[this.filters.sortBy]
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+      })
+      
+      return filtered
+    }
+  },
+  
+  watch: {
+    // Simple watcher
+    'filters.search'(newValue, oldValue) {
+      console.log(`Search changed from "${oldValue}" to "${newValue}"`)
+    },
+    
+    // Deep watcher for objects
+    filters: {
+      handler(newFilters, oldFilters) {
+        console.log('Filters changed:', newFilters)
+        this.saveFiltersToLocalStorage()
+      },
+      deep: true,
+      immediate: true
+    },
+    
+    // Watcher with async operations
+    async items(newItems) {
+      if (newItems.length > 0) {
+        await this.processItems(newItems)
+      }
+    }
+  },
+  
+  methods: {
+    // Debounced search method
+    debouncedSearch: debounce(function() {
+      this.performSearch()
+    }, 300),
+    
+    performSearch() {
+      // Actual search logic
+      console.log('Performing search for:', this.filters.search)
+    },
+    
+    saveFiltersToLocalStorage() {
+      localStorage.setItem('filters', JSON.stringify(this.filters))
+    }
+  }
+}
+```
+
+---
+
+## Lifecycle Hooks
+
+### Vue 3 Composition API Lifecycle
+
+```javascript
+import { 
+  onBeforeMount, onMounted, 
+  onBeforeUpdate, onUpdated,
+  onBeforeUnmount, onUnmounted,
+  onActivated, onDeactivated,
+  onErrorCaptured
+} from 'vue'
+
+export default {
+  setup() {
+    console.log('Setup - equivalent to beforeCreate/created')
+    
+    onBeforeMount(() => {
+      console.log('Component is about to be mounted')
+    })
+    
+    onMounted(() => {
+      console.log('Component mounted - DOM is available')
+      // Perfect place for:
+      // - API calls
+      // - DOM manipulation
+      // - Third-party library initialization
+    })
+    
+    onBeforeUpdate(() => {
+      console.log('Component is about to update')
+    })
+    
+    onUpdated(() => {
+      console.log('Component updated')
+      // Be careful with DOM manipulation here
+    })
+    
+    onBeforeUnmount(() => {
+      console.log('Component is about to be unmounted')
+      // Cleanup:
+      // - Remove event listeners
+      // - Cancel timers
+      // - Abort ongoing requests
+    })
+    
+    onUnmounted(() => {
+      console.log('Component unmounted')
+    })
+    
+    // For keep-alive components
+    onActivated(() => {
+      console.log('Component activated')
+    })
+    
+    onDeactivated(() => {
+      console.log('Component deactivated')
+    })
+    
+    // Error handling
+    onErrorCaptured((error, instance, info) => {
+      console.error('Error captured:', error, info)
+      return false // Prevent error from propagating
+    })
+  }
+}
+```
+
+### Vue 2 Options API Lifecycle
+
+```javascript
+export default {
+  // Creation phase
+  beforeCreate() {
+    console.log('beforeCreate - no data or methods yet')
+    // Use cases:
+    // - Loading indicators
+    // - Plugin initialization that doesn't need data
+  },
+  
+  created() {
+    console.log('created - data and methods available')
+    // Use cases:
+    // - API calls
+    // - Initial data setup
+    // - Event listener setup (non-DOM)
+  },
+  
+  // Mounting phase
+  beforeMount() {
+    console.log('beforeMount - template compiled, not yet rendered')
+  },
+  
+  mounted() {
+    console.log('mounted - DOM is available')
+    // Use cases:
+    // - DOM manipulation
+    // - Third-party library initialization requiring DOM
+    // - Start timers or intervals
+    
+    // Example: Initialize a chart library
+    this.initializeChart()
+  },
+  
+  // Update phase
+  beforeUpdate() {
+    console.log('beforeUpdate - data changed, DOM not yet updated')
+    // Good for accessing old DOM state
+  },
+  
+  updated() {
+    console.log('updated - DOM updated')
+    // Be careful with infinite update loops here
+    
+    // Example: Update third-party library with new data
+    this.updateChart()
+  },
+  
+  // Keep-alive hooks
+  activated() {
+    console.log('activated - component activated in keep-alive')
+    // Refresh data that might be stale
+    this.refreshData()
+  },
+  
+  deactivated() {
+    console.log('deactivated - component deactivated in keep-alive')
+    // Pause expensive operations
+    this.pauseAnimations()
+  },
+  
+  // Destruction phase
+  beforeDestroy() { // beforeUnmount in Vue 3
+    console.log('beforeDestroy - cleanup time')
+    // Cleanup:
+    // - Remove event listeners
+    // - Clear timers/intervals
+    // - Cancel HTTP requests
+    // - Unsubscribe from stores
+    
+    this.cleanup()
+  },
+  
+  destroyed() { // unmounted in Vue 3
+    console.log('destroyed - component is gone')
+  },
+  
+  // Error handling
+  errorCaptured(error, instance, info) {
+    console.error('Error captured:', error, info)
+    // Log error to service
+    this.$errorLogger.log(error, {
+      component: instance.$options.name,
+      info: info
+    })
+    
+    return false // Prevent error from propagating
+  },
+  
+  methods: {
+    initializeChart() {
+      this.chart = new Chart(this.$refs.canvas, {
+        type: 'bar',
+        data: this.chartData,
+        options: this.chartOptions
+      })
+    },
+    
+    updateChart() {
+      if (this.chart) {
+        this.chart.data = this.chartData
+        this.chart.update()
+      }
+    },
+    
+    cleanup() {
+      // Clear timers
+      if (this.intervalId) {
+        clearInterval(this.intervalId)
+      }
+      
+      // Remove event listeners
+      window.removeEventListener('resize', this.handleResize)
+      
+      // Cancel pending requests
+      if (this.cancelToken) {
+        this.cancelToken.cancel('Component unmounting')
+      }
+      
+      // Destroy chart
+      if (this.chart) {
+        this.chart.destroy()
+      }
+    }
+  }
+}
+```
+
+---
+
+## Template Syntax and Directives
+
+### Built-in Directives
+
+#### 1. Basic Directives
+```vue
+<template>
+  <div>
+    <!-- Text interpolation -->
+    <p>{{ message }}</p>
+    <p>{{ rawHtml }}</p>
+    
+    <!-- Raw HTML (be careful with XSS) -->
+    <div v-html="rawHtml"></div>
+    
+    <!-- Attribute binding -->
+    <img v-bind:src="imageSrc" v-bind:alt="imageAlt">
+    <img :src="imageSrc" :alt="imageAlt"> <!-- shorthand -->
+    
+    <!-- Dynamic attribute names -->
+    <button :[attributeName]="attributeValue">Dynamic Attribute</button>
+    
+    <!-- Class binding -->
+    <div :class="{ active: isActive, 'text-danger': hasError }"></div>
+    <div :class="[activeClass, errorClass]"></div>
+    <div :class="[{ active: isActive }, errorClass]"></div>
+    
+    <!-- Style binding -->
+    <div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+    <div :style="[baseStyles, overridingStyles]"></div>
+    
+    <!-- Conditional rendering -->
+    <p v-if="seen">Now you see me</p>
+    <p v-else-if="maybe">Maybe you see me</p>
+    <p v-else>Now you don't</p>
+    
+    <!-- Show/hide (CSS display) -->
+    <p v-show="visible">Conditionally visible</p>
+    
+    <!-- List rendering -->
+    <ul>
+      <li v-for="(item, index) in items" :key="item.id">
+        {{ index }} - {{ item.name }}
+      </li>
+    </ul>
+    
+    <!-- Object iteration -->
+    <ul>
+      <li v-for="(value, key) in object" :key="key">
+        {{ key }}: {{ value }}
+      </li>
+    </ul>
+    
+    <!-- Event listeners -->
+    <button @click="handleClick">Click me</button>
+    <button @click="handleClickWithArg('argument')">With argument</button>
+    <button @click.prevent="handleClick">With modifier</button>
+    
+    <!-- Form input binding -->
+    <input v-model="inputValue" placeholder="Two-way binding">
+    <input v-model.lazy="lazyValue"> <!-- Update on change, not input -->
+    <input v-model.number="numericValue" type="number">
+    <input v-model.trim="trimmedValue">
+  </div>
+</template>
+```
+
+#### 2. Advanced Directive Usage
+```vue
+<template>
+  <div>
+    <!-- Multiple event listeners -->
+    <button @click="handleClick" @mouseenter="handleHover" @mouseleave="handleLeave">
+      Multi-event button
+    </button>
+    
+    <!-- Event modifiers chaining -->
+    <form @submit.prevent.stop="handleSubmit">
+      <input @keyup.enter.exact="handleEnter" @keyup.ctrl.enter="handleCtrlEnter">
+    </form>
+    
+    <!-- Dynamic event names -->
+    <button @[eventName]="handleDynamicEvent">Dynamic Event</button>
+    
+    <!-- Slot content -->
+    <component-with-slots>
+      <template #header="{ user }">
+        <h1>Hello {{ user.name }}</h1>
+      </template>
+      
+      <template #default="slotProps">
+        <p>{{ slotProps.message }}</p>
+      </template>
+      
+      <template #footer>
+        <p>Footer content</p>
+      </template>
+    </component-with-slots>
+    
+    <!-- Reference to DOM elements -->
+    <input ref="inputRef" v-model="inputValue">
+    <component-child ref="childRef" />
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      inputValue: '',
+      eventName: 'click',
+      dynamicAttribute: 'title',
+      attributeValue: 'Dynamic title'
+    }
+  },
+  
+  mounted() {
+    // Access refs
+    this.$refs.inputRef.focus()
+    this.$refs.childRef.someChildMethod()
+  },
+  
+  methods: {
+    handleDynamicEvent() {
+      console.log(`${this.eventName} event triggered`)
+    }
+  }
+}
+</script>
+```
+
+### Custom Directives
+
+#### 3. Creating Custom Directives
+```javascript
+// Global directive registration (Vue 3)
+const app = createApp({})
+
+app.directive('focus', {
+  mounted(el) {
+    el.focus()
+  }
+})
+
+// Directive with full lifecycle hooks
+app.directive('highlight', {
+  beforeMount(el, binding, vnode) {
+    console.log('beforeMount')
+  },
+  
+  mounted(el, binding, vnode) {
+    el.style.backgroundColor = binding.value || 'yellow'
+  },
+  
+  beforeUpdate(el, binding, vnode, prevVnode) {
+    console.log('beforeUpdate')
+  },
+  
+  updated(el, binding, vnode, prevVnode) {
+    if (binding.value !== binding.oldValue) {
+      el.style.backgroundColor = binding.value || 'yellow'
+    }
+  },
+  
+  beforeUnmount(el, binding, vnode) {
+    console.log('beforeUnmount')
+  },
+  
+  unmounted(el, binding, vnode) {
+    console.log('unmounted')
+  }
+})
+
+// Complex directive with modifiers and arguments
+app.directive('scroll-spy', {
+  mounted(el, binding) {
+    const { value, arg, modifiers } = binding
+    
+    // arg: directive argument (v-scroll-spy:top)
+    // modifiers: object of modifiers (v-scroll-spy.immediate.throttle)
+    // value: directive value
+    
+    const options = {
+      threshold: arg ? parseFloat(arg) : 0.1,
+      immediate: modifiers.immediate,
+      throttle: modifiers.throttle ? 100 : 0
+    }
+    
+    let throttleTimer = null
+    
+    const callback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (typeof value === 'function') {
+            value(entry.target, entry)
+          }
+        }
+      })
+    }
+    
+    const throttledCallback = options.throttle 
+      ? (entries) => {
+          if (throttleTimer) return
+          throttleTimer = setTimeout(() => {
+            callback(entries)
+            throttleTimer = null
+          }, options.throttle)
+        }
+      : callback
+    
+    const observer = new IntersectionObserver(throttledCallback, {
+      threshold: options
