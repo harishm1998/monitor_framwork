@@ -1540,3 +1540,3556 @@ class PermissionManager {
    - Security auditing
 
 #### **Phase 5: Polish & Documentation (Weeks 17-
+
+
+
+
+# **Vue.js Monitoring App - Logical Development Parts**
+
+## **Part 1: Core Foundation (Weeks 1-3)**
+*The absolute minimum needed to run the application*
+
+### **What Gets Built:**
+- **Application Bootstrap System**
+- **Service Container & Dependency Injection**
+- **Basic Event Bus**
+- **Configuration Loader (JSON only)**
+- **Simple Component Registry**
+- **Basic Vue App Mount**
+
+### **Deliverables:**
+```
+/core/
+├── app.js                 # Main application class
+├── service-container.js   # DI container
+├── event-bus.js          # Basic pub/sub
+├── config-loader.js      # JSON config loading
+├── component-registry.js # Component storage
+└── bootstrap.js          # App initialization
+```
+
+### **Success Criteria:**
+- App starts and loads a basic configuration
+- Services can be registered and injected
+- Events can be emitted and listened to
+- Components can be registered
+- Basic error handling works
+
+### **Testing Strategy:**
+- Unit tests for each core service
+- Integration test for bootstrap process
+- Configuration loading tests
+
+---
+
+## **Part 2: Plugin Architecture (Weeks 4-6)**
+*The plugin system that makes everything extensible*
+
+### **What Gets Built:**
+- **Plugin Manager & Discovery**
+- **Plugin Interface Definition**
+- **Plugin Lifecycle Management**
+- **Plugin SDK Foundation**
+- **Basic Plugin Communication**
+- **Plugin Configuration System**
+
+### **Deliverables:**
+```
+/core/
+├── plugin-manager.js     # Plugin loading & management
+├── plugin-sdk.js         # Plugin development kit
+└── plugin-interface.js   # Plugin contracts
+
+/plugins/
+├── example-plugin/       # Reference plugin implementation
+└── plugin-template/      # Template for new plugins
+```
+
+### **Success Criteria:**
+- Plugins can be discovered and loaded
+- Plugin lifecycle works (init, register, destroy)
+- Plugins can communicate with core framework
+- Example plugin works end-to-end
+- Plugin configuration validates
+
+### **Dependencies:**
+- Requires Part 1 (Core Foundation)
+
+---
+
+## **Part 3: Widget System (Weeks 7-9)**
+*The component system for building UI elements*
+
+### **What Gets Built:**
+- **Base Widget Class**
+- **Widget Lifecycle Management**
+- **Dynamic Widget Loading**
+- **Widget Configuration System**
+- **Basic Widget Library (4-5 widgets)**
+- **Widget Communication**
+
+### **Deliverables:**
+```
+/widgets/
+├── base-widget.js        # Base widget class
+├── widget-factory.js     # Widget creation
+├── chart-widget/         # Chart visualization widget
+├── table-widget/         # Data table widget
+├── card-widget/          # Information card widget
+├── gauge-widget/         # Progress/status gauge
+└── text-widget/          # Simple text display
+
+/core/
+└── widget-manager.js     # Widget registry & management
+```
+
+### **Success Criteria:**
+- Widgets can be created dynamically
+- Widget lifecycle works properly
+- Widgets respond to configuration changes
+- Basic widget library is functional
+- Widgets can communicate with each other
+
+### **Dependencies:**
+- Requires Part 1 (Core Foundation)
+- Requires Part 2 (Plugin Architecture)
+
+---
+
+## **Part 4: Layout Engine (Weeks 10-11)**
+*The system for arranging widgets on the dashboard*
+
+### **What Gets Built:**
+- **Layout Manager**
+- **Grid Layout System**
+- **Flex Layout System**
+- **Responsive Behavior**
+- **Layout Configuration**
+- **Widget Positioning**
+
+### **Deliverables:**
+```
+/layouts/
+├── layout-manager.js     # Layout coordination
+├── grid-layout.js        # CSS Grid implementation
+├── flex-layout.js        # Flexbox implementation
+└── responsive.js         # Responsive utilities
+
+/core/
+└── layout-engine.js      # Layout system integration
+```
+
+### **Success Criteria:**
+- Multiple layout types available
+- Widgets position correctly
+- Responsive behavior works
+- Layout can be changed dynamically
+- Configuration drives layout
+
+### **Dependencies:**
+- Requires Part 3 (Widget System)
+
+---
+
+## **Part 5: Data Management (Weeks 12-15)**
+*The system for fetching, transforming, and managing data*
+
+### **What Gets Built:**
+- **Data Source Abstraction**
+- **REST API Data Source**
+- **WebSocket Data Source**
+- **Data Transformation Pipeline**
+- **Basic Caching System**
+- **Data Validation**
+
+### **Deliverables:**
+```
+/data/
+├── data-manager.js       # Central data coordination
+├── data-sources/
+│   ├── rest-source.js    # HTTP REST API source
+│   ├── websocket-source.js # WebSocket source
+│   └── local-source.js   # Local storage source
+├── transformers/
+│   ├── transformer-engine.js # Transformation pipeline
+│   ├── normalizer.js     # Data normalization
+│   ├── aggregator.js     # Data aggregation
+│   └── filter.js         # Data filtering
+└── cache/
+    ├── cache-manager.js  # Multi-level caching
+    └── cache-policies.js # Eviction strategies
+```
+
+### **Success Criteria:**
+- Data sources connect and fetch data
+- Data transformation pipeline works
+- Caching improves performance
+- Real-time data updates work
+- Error handling is robust
+
+### **Dependencies:**
+- Requires Part 1 (Core Foundation)
+- Can work independently but integrates with Part 3
+
+---
+
+## **Part 6: Configuration Management (Weeks 16-17)**
+*Advanced configuration features and validation*
+
+### **What Gets Built:**
+- **Configuration Hierarchy**
+- **JSON Schema Validation**
+- **Configuration Merging**
+- **Hot Configuration Reload**
+- **Configuration Editor UI**
+- **Configuration Templates**
+
+### **Deliverables:**
+```
+/config/
+├── config-manager.js     # Advanced config management
+├── config-validator.js   # Schema validation
+├── config-merger.js      # Configuration inheritance
+├── config-watcher.js     # Hot reload capability
+└── schemas/
+    ├── app-schema.json   # Application config schema
+    ├── widget-schema.json # Widget config schema
+    └── plugin-schema.json # Plugin config schema
+
+/ui/
+└── config-editor/        # Configuration editing interface
+```
+
+### **Success Criteria:**
+- Configuration validation works
+- Hot reload doesn't break app
+- Configuration inheritance works
+- Schema validation catches errors
+- Configuration editor is usable
+
+### **Dependencies:**
+- Extends Part 1 (Core Foundation)
+- Requires Part 2 for plugin configs
+
+---
+
+## **Part 7: Monitoring Widgets (Weeks 18-20)**
+*Specific widgets for the four monitoring categories*
+
+### **What Gets Built:**
+- **Storage Monitoring Widgets**
+- **Database Status Widgets**
+- **Server Health Widgets**
+- **Process Monitoring Widgets**
+- **Custom Widget Templates**
+- **Widget Configuration UIs**
+
+### **Deliverables:**
+```
+/plugins/monitoring-widgets/
+├── storage/
+│   ├── storage-usage-chart.js
+│   ├── file-hierarchy-tree.js
+│   └── storage-health-indicator.js
+├── database/
+│   ├── db-connection-status.js
+│   ├── query-performance-chart.js
+│   └── db-table-monitor.js
+├── server/
+│   ├── cpu-usage-gauge.js
+│   ├── memory-usage-chart.js
+│   └── network-status-indicator.js
+└── process/
+    ├── process-list-table.js
+    ├── process-cpu-chart.js
+    └── process-memory-gauge.js
+```
+
+### **Success Criteria:**
+- All four monitoring categories covered
+- Widgets display relevant metrics
+- Real-time updates work
+- Configuration is intuitive
+- Performance is acceptable
+
+### **Dependencies:**
+- Requires Part 3 (Widget System)
+- Requires Part 5 (Data Management)
+
+---
+
+## **Part 8: Performance & Polish (Weeks 21-22)**
+*Optimization and user experience improvements*
+
+### **What Gets Built:**
+- **Performance Monitoring**
+- **Memory Management**
+- **Bundle Optimization**
+- **Error Boundaries**
+- **Loading States**
+- **User Experience Polish**
+
+### **Deliverables:**
+```
+/performance/
+├── performance-monitor.js # Performance tracking
+├── memory-manager.js     # Memory optimization
+├── lazy-loader.js        # Dynamic loading
+└── error-boundary.js     # Error isolation
+
+/ui/
+├── loading-states.js     # Loading indicators
+├── error-displays.js     # Error handling UI
+└── animations.js         # Smooth transitions
+```
+
+### **Success Criteria:**
+- App performs well with many widgets
+- Memory usage is reasonable
+- Errors don't crash the app
+- Loading states provide feedback
+- User experience is smooth
+
+### **Dependencies:**
+- Enhances all previous parts
+
+---
+
+## **Part 9: Developer Tools (Weeks 23-24)**
+*Tools to help developers create plugins and configurations*
+
+### **What Gets Built:**
+- **Plugin Development CLI**
+- **Plugin Testing Framework**
+- **Configuration Validator Tool**
+- **Performance Profiler**
+- **Documentation Generator**
+- **Development Server**
+
+### **Deliverables:**
+```
+/dev-tools/
+├── plugin-cli.js         # Plugin scaffolding tool
+├── test-framework.js     # Plugin testing utilities
+├── config-validator.js   # Config validation tool
+├── profiler.js           # Performance profiling
+├── doc-generator.js      # Auto documentation
+└── dev-server.js         # Development server
+
+/templates/
+├── plugin-template/      # New plugin template
+├── widget-template/      # New widget template
+└── config-templates/     # Configuration examples
+```
+
+### **Success Criteria:**
+- Plugins can be scaffolded quickly
+- Testing framework catches issues
+- Configuration validation prevents errors
+- Performance bottlenecks are identifiable
+- Documentation stays current
+
+### **Dependencies:**
+- Requires Part 2 (Plugin Architecture)
+- Enhances development of all parts
+
+---
+
+## **Part 10: Documentation & Examples (Weeks 25-26)**
+*Complete documentation and example implementations*
+
+### **What Gets Built:**
+- **API Documentation**
+- **Plugin Development Guide**
+- **Configuration Reference**
+- **Example Implementations**
+- **Troubleshooting Guide**
+- **Migration Guide**
+
+### **Deliverables:**
+```
+/docs/
+├── api/                  # Complete API documentation
+├── guides/               # Step-by-step guides
+├── examples/             # Working examples
+├── troubleshooting/      # Common issues & fixes
+└── reference/            # Complete reference docs
+
+/examples/
+├── basic-dashboard/      # Simple dashboard example
+├── advanced-monitoring/  # Complex monitoring setup
+├── custom-theme/         # Theme customization example
+└── plugin-examples/      # Various plugin examples
+```
+
+### **Success Criteria:**
+- Documentation is complete and accurate
+- Examples work out of the box
+- Developers can follow guides successfully
+- Common issues are documented
+- Migration path is clear
+
+### **Dependencies:**
+- Documents all previous parts
+
+---
+
+## **Development Order & Dependencies**
+
+### **Critical Path:**
+```
+Part 1 → Part 2 → Part 3 → Part 4 → Part 7
+(Core) → (Plugins) → (Widgets) → (Layout) → (Monitoring)
+```
+
+### **Parallel Development Possible:**
+- **Part 5 (Data)** can be developed alongside Part 3-4
+- **Part 6 (Config)** can be developed alongside Part 4-5
+- **Part 8 (Performance)** can be developed incrementally
+- **Part 9 (Dev Tools)** can start after Part 2
+- **Part 10 (Docs)** can be written incrementally
+
+### **Minimum Viable Product (MVP):**
+Parts 1, 2, 3, 4, 5, 7 = **Functional monitoring app**
+
+### **Full-Featured Release:**
+All 10 parts = **Production-ready monitoring platform**
+
+This logical division allows for:
+- **Clear milestones** at each part completion
+- **Parallel development** where dependencies allow
+- **Incremental delivery** of working features
+- **Easy testing** of individual components
+- **Flexible timeline** based on priorities
+
+
+
+# **Vue.js Concepts for Monitoring App - Detailed Analysis**
+
+## **Part 1: Vue.js Fundamentals & Reactive System**
+
+### **1.1 Vue Instance & Application Creation (Without Build Tools)**
+
+#### **Traditional Vue 3 Setup (Our Approach)**
+```javascript
+// Global Vue instance creation
+const { createApp, ref, reactive, computed, watch, onMounted } = Vue
+
+const MonitoringApp = {
+  setup() {
+    // Composition API setup
+    const appState = reactive({
+      plugins: new Map(),
+      widgets: new Map(),
+      config: {},
+      isInitialized: false
+    })
+    
+    const currentTheme = ref('default')
+    const isLoading = ref(true)
+    
+    // Computed properties for derived state
+    const activeWidgets = computed(() => {
+      return Array.from(appState.widgets.values())
+        .filter(widget => widget.active)
+    })
+    
+    return {
+      appState,
+      currentTheme,
+      isLoading,
+      activeWidgets
+    }
+  },
+  
+  // Component definition
+  template: `
+    <div class="monitoring-app" :class="themeClass">
+      <div v-if="isLoading" class="loading">Loading...</div>
+      <dashboard v-else :widgets="activeWidgets" />
+    </div>
+  `
+}
+
+// Mount application
+const app = createApp(MonitoringApp)
+app.mount('#app')
+```
+
+#### **Why This Approach for Our Use Case:**
+- **No Build Step**: Direct browser loading via CDN
+- **Hot Reload Capability**: Can reload components dynamically
+- **Plugin System**: Easy to inject new components at runtime
+- **Configuration Driven**: Perfect for JSON-based configuration
+
+### **1.2 Reactivity System Deep Dive**
+
+#### **Reactive Data Structures for Plugin System**
+```javascript
+// Core reactive state management
+class ReactiveAppState {
+  constructor() {
+    // Using Vue's reactive for deep reactivity
+    this.state = reactive({
+      // Plugin registry with reactive updates
+      plugins: new Map(),
+      
+      // Widget instances with reactive properties
+      widgets: new Map(),
+      
+      // Configuration with nested reactivity
+      config: {
+        dashboard: {
+          layout: 'grid',
+          sections: []
+        },
+        theme: {
+          name: 'default',
+          variables: {}
+        }
+      },
+      
+      // Data sources with reactive connection status
+      dataSources: new Map(),
+      
+      // Real-time data with automatic updates
+      liveData: new Map()
+    })
+    
+    // Computed properties for derived state
+    this.computedProps = {
+      // Automatically updates when plugins change
+      availableWidgets: computed(() => {
+        const widgets = []
+        for (const plugin of this.state.plugins.values()) {
+          widgets.push(...plugin.widgets)
+        }
+        return widgets
+      }),
+      
+      // Dashboard layout calculation
+      layoutConfig: computed(() => {
+        return this.calculateLayout(this.state.config.dashboard)
+      }),
+      
+      // Active data connections
+      activeConnections: computed(() => {
+        return Array.from(this.state.dataSources.values())
+          .filter(source => source.status === 'connected')
+      })
+    }
+  }
+  
+  // Method to update state reactively
+  updateConfig(path, value) {
+    // Deep reactive update
+    const keys = path.split('.')
+    let current = this.state.config
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      current = current[keys[i]]
+    }
+    
+    current[keys[keys.length - 1]] = value
+    // Vue's reactivity automatically triggers updates
+  }
+}
+```
+
+#### **Reactive Plugin Registration**
+```javascript
+class PluginManager {
+  constructor(reactiveState) {
+    this.state = reactiveState
+    
+    // Watch for plugin changes
+    watch(
+      () => this.state.plugins.size,
+      (newSize, oldSize) => {
+        console.log(`Plugins changed: ${oldSize} → ${newSize}`)
+        this.updateComponentRegistry()
+      }
+    )
+  }
+  
+  registerPlugin(plugin) {
+    // Reactive plugin addition
+    this.state.plugins.set(plugin.name, reactive({
+      ...plugin,
+      status: 'registered',
+      widgets: plugin.widgets.map(w => reactive(w)),
+      lastUpdated: Date.now()
+    }))
+    
+    // This automatically triggers watchers and computed properties
+  }
+  
+  updateComponentRegistry() {
+    // Automatically called when plugins change
+    // Updates available components for dynamic loading
+  }
+}
+```
+
+### **1.3 Composition API for Plugin Architecture**
+
+#### **Composable Functions for Plugin Development**
+```javascript
+// usePlugin composable for plugin functionality
+function usePlugin(pluginName) {
+  const plugin = inject('pluginManager').getPlugin(pluginName)
+  const config = inject('configManager').getPluginConfig(pluginName)
+  const eventBus = inject('eventBus')
+  
+  // Reactive plugin state
+  const pluginState = reactive({
+    initialized: false,
+    error: null,
+    data: {}
+  })
+  
+  // Plugin lifecycle methods
+  const initialize = async () => {
+    try {
+      await plugin.init()
+      pluginState.initialized = true
+      eventBus.emit('plugin:initialized', pluginName)
+    } catch (error) {
+      pluginState.error = error
+      eventBus.emit('plugin:error', { pluginName, error })
+    }
+  }
+  
+  const cleanup = () => {
+    plugin.destroy()
+    pluginState.initialized = false
+  }
+  
+  // Automatic cleanup on unmount
+  onUnmounted(cleanup)
+  
+  return {
+    pluginState: readonly(pluginState),
+    initialize,
+    cleanup,
+    config: readonly(config)
+  }
+}
+
+// useDataSource composable for data management
+function useDataSource(sourceConfig) {
+  const data = ref(null)
+  const loading = ref(false)
+  const error = ref(null)
+  const lastUpdated = ref(null)
+  
+  // Reactive data fetching
+  const fetch = async () => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      const result = await dataSourceManager.fetch(sourceConfig)
+      data.value = result
+      lastUpdated.value = new Date()
+    } catch (err) {
+      error.value = err
+    } finally {
+      loading.value = false
+    }
+  }
+  
+  // Auto-refresh functionality
+  const { pause, resume } = useIntervalFn(
+    fetch,
+    sourceConfig.refreshInterval || 5000
+  )
+  
+  // Watch for config changes
+  watch(
+    () => sourceConfig,
+    (newConfig) => {
+      if (newConfig.refreshInterval !== sourceConfig.refreshInterval) {
+        pause()
+        resume()
+      }
+    },
+    { deep: true }
+  )
+  
+  // Initial fetch
+  onMounted(fetch)
+  
+  return {
+    data: readonly(data),
+    loading: readonly(loading),
+    error: readonly(error),
+    lastUpdated: readonly(lastUpdated),
+    refresh: fetch,
+    pause,
+    resume
+  }
+}
+```
+
+#### **Widget Development with Composition API**
+```javascript
+// Base widget composable
+function useWidget(config) {
+  const widgetState = reactive({
+    id: config.id,
+    type: config.type,
+    title: config.title,
+    visible: true,
+    loading: false,
+    error: null,
+    data: null
+  })
+  
+  // Data source integration
+  const { data, loading, error, refresh } = useDataSource(config.dataSource)
+  
+  // Sync data source state with widget state
+  watchEffect(() => {
+    widgetState.data = data.value
+    widgetState.loading = loading.value
+    widgetState.error = error.value
+  })
+  
+  // Widget lifecycle
+  const initialize = () => {
+    widgetState.visible = true
+    // Initialize widget-specific functionality
+  }
+  
+  const destroy = () => {
+    widgetState.visible = false
+    // Cleanup widget resources
+  }
+  
+  // Configuration updates
+  const updateConfig = (newConfig) => {
+    Object.assign(config, newConfig)
+    // Trigger re-initialization if needed
+  }
+  
+  return {
+    widgetState: readonly(widgetState),
+    initialize,
+    destroy,
+    updateConfig,
+    refresh
+  }
+}
+
+// Storage monitoring widget implementation
+const StorageWidget = {
+  props: {
+    config: {
+      type: Object,
+      required: true
+    }
+  },
+  
+  setup(props) {
+    const { widgetState, initialize, destroy, refresh } = useWidget(props.config)
+    
+    // Storage-specific functionality
+    const storageMetrics = computed(() => {
+      if (!widgetState.data) return {}
+      
+      return {
+        usage: widgetState.data.used / widgetState.data.total * 100,
+        free: widgetState.data.total - widgetState.data.used,
+        total: widgetState.data.total
+      }
+    })
+    
+    const getUsageColor = (usage) => {
+      if (usage > 90) return 'danger'
+      if (usage > 75) return 'warning'
+      return 'success'
+    }
+    
+    // Initialize on mount
+    onMounted(initialize)
+    onUnmounted(destroy)
+    
+    return {
+      widgetState,
+      storageMetrics,
+      getUsageColor,
+      refresh
+    }
+  },
+  
+  template: `
+    <div class="storage-widget" :class="{ loading: widgetState.loading }">
+      <div class="widget-header">
+        <h3>{{ widgetState.title }}</h3>
+        <button @click="refresh">Refresh</button>
+      </div>
+      
+      <div v-if="widgetState.error" class="error">
+        {{ widgetState.error.message }}
+      </div>
+      
+      <div v-else-if="widgetState.data" class="storage-metrics">
+        <div class="usage-bar">
+          <div 
+            class="usage-fill" 
+            :class="getUsageColor(storageMetrics.usage)"
+            :style="{ width: storageMetrics.usage + '%' }"
+          ></div>
+        </div>
+        
+        <div class="metrics-details">
+          <div>Used: {{ formatBytes(widgetState.data.used) }}</div>
+          <div>Free: {{ formatBytes(storageMetrics.free) }}</div>
+          <div>Total: {{ formatBytes(storageMetrics.total) }}</div>
+        </div>
+      </div>
+      
+      <div v-else class="loading-state">
+        Loading storage data...
+      </div>
+    </div>
+  `
+}
+```
+
+---
+
+## **Part 2: Dynamic Component System**
+
+### **2.1 Dynamic Component Loading & Registration**
+
+#### **Component Registry with Dynamic Import**
+```javascript
+class ComponentRegistry {
+  constructor() {
+    this.components = reactive(new Map())
+    this.loadingPromises = new Map()
+    this.componentCache = new Map()
+  }
+  
+  // Register component with metadata
+  register(name, componentDefinition) {
+    const componentInfo = reactive({
+      name,
+      component: componentDefinition.component,
+      props: componentDefinition.props || {},
+      dependencies: componentDefinition.dependencies || [],
+      lazy: componentDefinition.lazy || false,
+      cached: componentDefinition.cached || true,
+      lastUpdated: Date.now()
+    })
+    
+    this.components.set(name, componentInfo)
+    
+    // Emit registration event
+    eventBus.emit('component:registered', { name, info: componentInfo })
+  }
+  
+  // Dynamic component loading
+  async load(componentName) {
+    // Check if already loaded and cached
+    if (this.componentCache.has(componentName)) {
+      return this.componentCache.get(componentName)
+    }
+    
+    // Check if currently loading (prevent duplicate requests)
+    if (this.loadingPromises.has(componentName)) {
+      return await this.loadingPromises.get(componentName)
+    }
+    
+    // Start loading process
+    const loadingPromise = this.loadComponent(componentName)
+    this.loadingPromises.set(componentName, loadingPromise)
+    
+    try {
+      const component = await loadingPromise
+      
+      // Cache if enabled
+      const componentInfo = this.components.get(componentName)
+      if (componentInfo?.cached) {
+        this.componentCache.set(componentName, component)
+      }
+      
+      return component
+    } finally {
+      this.loadingPromises.delete(componentName)
+    }
+  }
+  
+  async loadComponent(componentName) {
+    const componentInfo = this.components.get(componentName)
+    
+    if (!componentInfo) {
+      throw new Error(`Component '${componentName}' not registered`)
+    }
+    
+    // Load dependencies first
+    for (const dependency of componentInfo.dependencies) {
+      await this.loadDependency(dependency)
+    }
+    
+    // Dynamic import based on component type
+    if (typeof componentInfo.component === 'string') {
+      // Load from URL/path
+      const module = await import(componentInfo.component)
+      return module.default || module
+    } else if (typeof componentInfo.component === 'function') {
+      // Factory function
+      return await componentInfo.component()
+    } else {
+      // Direct component definition
+      return componentInfo.component
+    }
+  }
+  
+  async loadDependency(dependency) {
+    // Load external dependencies (like Chart.js)
+    if (dependency.startsWith('http')) {
+      return await this.loadScript(dependency)
+    }
+    
+    // Load internal dependencies
+    return await this.load(dependency)
+  }
+  
+  loadScript(url) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.onload = resolve
+      script.onerror = reject
+      document.head.appendChild(script)
+    })
+  }
+}
+```
+
+#### **Dynamic Component Renderer**
+```javascript
+// Component for rendering dynamic widgets
+const DynamicWidget = {
+  props: {
+    widgetType: {
+      type: String,
+      required: true
+    },
+    config: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  
+  setup(props) {
+    const componentRegistry = inject('componentRegistry')
+    const dynamicComponent = ref(null)
+    const loading = ref(false)
+    const error = ref(null)
+    
+    // Load component when widget type changes
+    const loadWidget = async () => {
+      loading.value = true
+      error.value = null
+      
+      try {
+        const component = await componentRegistry.load(props.widgetType)
+        dynamicComponent.value = component
+      } catch (err) {
+        error.value = err
+        console.error(`Failed to load widget: ${props.widgetType}`, err)
+      } finally {
+        loading.value = false
+      }
+    }
+    
+    // Watch for widget type changes
+    watch(
+      () => props.widgetType,
+      loadWidget,
+      { immediate: true }
+    )
+    
+    return {
+      dynamicComponent,
+      loading,
+      error
+    }
+  },
+  
+  template: `
+    <div class="dynamic-widget">
+      <div v-if="loading" class="loading">
+        Loading widget: {{ widgetType }}...
+      </div>
+      
+      <div v-else-if="error" class="error">
+        <h4>Failed to load widget: {{ widgetType }}</h4>
+        <p>{{ error.message }}</p>
+      </div>
+      
+      <component
+        v-else-if="dynamicComponent"
+        :is="dynamicComponent"
+        v-bind="config"
+        @error="error = $event"
+      />
+    </div>
+  `
+}
+```
+
+### **2.2 Plugin Component Integration**
+
+#### **Plugin Component Wrapper**
+```javascript
+// Wrapper for plugin-provided components
+const PluginComponent = {
+  props: {
+    pluginName: String,
+    componentName: String,
+    config: Object
+  },
+  
+  setup(props) {
+    const pluginManager = inject('pluginManager')
+    const component = ref(null)
+    const error = ref(null)
+    
+    // Plugin context for component
+    const pluginContext = computed(() => ({
+      pluginName: props.pluginName,
+      config: props.config,
+      eventBus: inject('eventBus'),
+      dataManager: inject('dataManager'),
+      services: inject('services')
+    }))
+    
+    const loadPluginComponent = async () => {
+      try {
+        const plugin = pluginManager.getPlugin(props.pluginName)
+        const componentDef = plugin.getComponent(props.componentName)
+        
+        // Wrap component with plugin context
+        component.value = {
+          ...componentDef,
+          setup(componentProps) {
+            // Inject plugin context
+            provide('pluginContext', pluginContext.value)
+            
+            // Call original setup if exists
+            if (componentDef.setup) {
+              return componentDef.setup(componentProps)
+            }
+            
+            return {}
+          }
+        }
+      } catch (err) {
+        error.value = err
+      }
+    }
+    
+    onMounted(loadPluginComponent)
+    
+    return {
+      component,
+      error,
+      pluginContext
+    }
+  },
+  
+  template: `
+    <div class="plugin-component">
+      <div v-if="error" class="error">
+        Plugin component error: {{ error.message }}
+      </div>
+      
+      <component
+        v-else-if="component"
+        :is="component"
+        v-bind="config"
+      />
+    </div>
+  `
+}
+```
+
+#### **Plugin Component API**
+```javascript
+// API for plugins to register components
+class PluginComponentAPI {
+  constructor(pluginName, registry) {
+    this.pluginName = pluginName
+    this.registry = registry
+    this.components = new Map()
+  }
+  
+  // Register widget component
+  registerWidget(name, component) {
+    const fullName = `${this.pluginName}:${name}`
+    
+    // Enhance component with plugin capabilities
+    const enhancedComponent = this.enhanceComponent(component)
+    
+    this.registry.register(fullName, {
+      component: enhancedComponent,
+      type: 'widget',
+      plugin: this.pluginName,
+      cached: true,
+      lazy: true
+    })
+    
+    this.components.set(name, enhancedComponent)
+  }
+  
+  // Register layout component
+  registerLayout(name, component) {
+    const fullName = `${this.pluginName}:layout:${name}`
+    
+    this.registry.register(fullName, {
+      component: this.enhanceComponent(component),
+      type: 'layout',
+      plugin: this.pluginName
+    })
+  }
+  
+  // Enhance component with plugin features
+  enhanceComponent(component) {
+    return {
+      ...component,
+      
+      setup(props, context) {
+        // Inject plugin services
+        const pluginContext = inject('pluginContext')
+        const eventBus = inject('eventBus')
+        const dataManager = inject('dataManager')
+        
+        // Plugin-specific utilities
+        const pluginUtils = {
+          emit: (event, data) => {
+            eventBus.emit(`plugin:${this.pluginName}:${event}`, data)
+          },
+          
+          getData: (sourceId) => {
+            return dataManager.getSource(`${this.pluginName}:${sourceId}`)
+          },
+          
+          log: (level, message, data) => {
+            console[level](`[${this.pluginName}] ${message}`, data)
+          }
+        }
+        
+        // Call original setup with enhanced context
+        const originalSetup = component.setup || (() => ({}))
+        const setupResult = originalSetup(props, {
+          ...context,
+          pluginUtils,
+          pluginContext
+        })
+        
+        return {
+          ...setupResult,
+          pluginUtils
+        }
+      }
+    }
+  }
+  
+  getComponent(name) {
+    return this.components.get(name)
+  }
+}
+```
+
+---
+
+## **Part 3: Advanced Reactivity Patterns**
+
+### **3.1 Custom Reactive Data Structures**
+
+#### **Reactive Data Store with Persistence**
+```javascript
+// Custom reactive store for plugin data
+class ReactiveDataStore {
+  constructor(name, options = {}) {
+    this.name = name
+    this.options = options
+    
+    // Main reactive state
+    this.state = reactive({
+      data: new Map(),
+      metadata: new Map(),
+      subscriptions: new Map(),
+      lastUpdated: null,
+      status: 'idle'
+    })
+    
+    // Computed properties for derived data
+    this.computed = {
+      // Get all data as array
+      allData: computed(() => Array.from(this.state.data.values())),
+      
+      // Get filtered data
+      filteredData: computed(() => {
+        if (!this.currentFilter) return this.computed.allData.value
+        return this.computed.allData.value.filter(this.currentFilter)
+      }),
+      
+      // Get aggregated statistics
+      stats: computed(() => this.calculateStats(this.computed.allData.value))
+    }
+    
+    // Watchers for side effects
+    this.setupWatchers()
+    
+    // Persistence if enabled
+    if (options.persistent) {
+      this.setupPersistence()
+    }
+  }
+  
+  // Set data with automatic reactivity
+  set(key, value) {
+    const timestamp = Date.now()
+    
+    // Update data
+    this.state.data.set(key, value)
+    
+    // Update metadata
+    this.state.metadata.set(key, {
+      created: this.state.metadata.get(key)?.created || timestamp,
+      updated: timestamp,
+      version: (this.state.metadata.get(key)?.version || 0) + 1
+    })
+    
+    this.state.lastUpdated = timestamp
+    
+    // Emit change event
+    this.emit('data:changed', { key, value, timestamp })
+  }
+  
+  // Get data with reactive tracking
+  get(key) {
+    return this.state.data.get(key)
+  }
+  
+  // Reactive subscription to data changes
+  subscribe(key, callback) {
+    const subscriptionId = `${key}_${Date.now()}_${Math.random()}`
+    
+    // Create watcher for specific key
+    const stopWatcher = watch(
+      () => this.state.data.get(key),
+      (newValue, oldValue) => {
+        callback(newValue, oldValue, key)
+      },
+      { deep: true }
+    )
+    
+    // Store subscription
+    this.state.subscriptions.set(subscriptionId, {
+      key,
+      callback,
+      stopWatcher,
+      created: Date.now()
+    })
+    
+    return {
+      id: subscriptionId,
+      unsubscribe: () => {
+        stopWatcher()
+        this.state.subscriptions.delete(subscriptionId)
+      }
+    }
+  }
+  
+  // Bulk operations with single reactivity update
+  batch(operations) {
+    // Temporarily pause reactivity
+    const updates = []
+    
+    operations.forEach(op => {
+      switch (op.type) {
+        case 'set':
+          updates.push(() => this.set(op.key, op.value))
+          break
+        case 'delete':
+          updates.push(() => this.delete(op.key))
+          break
+        case 'update':
+          updates.push(() => this.update(op.key, op.updater))
+          break
+      }
+    })
+    
+    // Execute all updates
+    updates.forEach(update => update())
+    
+    // Emit batch change event
+    this.emit('data:batch_changed', { operations, timestamp: Date.now() })
+  }
+  
+  setupWatchers() {
+    // Watch for data changes and update status
+    watch(
+      () => this.state.data.size,
+      (newSize, oldSize) => {
+        this.state.status = newSize > oldSize ? 'growing' : 'shrinking'
+        setTimeout(() => { this.state.status = 'idle' }, 1000)
+      }
+    )
+    
+    // Auto-cleanup old subscriptions
+    watch(
+      () => this.state.subscriptions.size,
+      () => {
+        if (this.state.subscriptions.size > 100) {
+          this.cleanupOldSubscriptions()
+        }
+      }
+    )
+  }
+  
+  setupPersistence() {
+    // Save to localStorage on changes (debounced)
+    const debouncedSave = debounce(() => {
+      try {
+        const serializedData = JSON.stringify({
+          data: Array.from(this.state.data.entries()),
+          metadata: Array.from(this.state.metadata.entries()),
+          lastUpdated: this.state.lastUpdated
+        })
+        
+        localStorage.setItem(`store_${this.name}`, serializedData)
+      } catch (error) {
+        console.error('Failed to persist store data:', error)
+      }
+    }, 1000)
+    
+    watch(
+      () => this.state.lastUpdated,
+      debouncedSave
+    )
+    
+    // Load from localStorage on initialization
+    this.loadFromStorage()
+  }
+  
+  loadFromStorage() {
+    try {
+      const stored = localStorage.getItem(`store_${this.name}`)
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        
+        // Restore data
+        this.state.data = reactive(new Map(parsed.data))
+        this.state.metadata = reactive(new Map(parsed.metadata))
+        this.state.lastUpdated = parsed.lastUpdated
+      }
+    } catch (error) {
+      console.error('Failed to load store data:', error)
+    }
+  }
+}
+```
+
+#### **Reactive Configuration Manager**
+```javascript
+class ReactiveConfigManager {
+  constructor() {
+    // Hierarchical configuration structure
+    this.config = reactive({
+      global: {},
+      plugins: new Map(),
+      widgets: new Map(),
+      themes: new Map(),
+      user: {}
+    })
+    
+    // Configuration watchers
+    this.watchers = new Map()
+    
+    // Computed configurations
+    this.computed = {
+      // Merged configuration for specific plugin
+      pluginConfig: computed(() => (pluginName) => {
+        return this.mergeConfigs([
+          this.config.global,
+          this.config.plugins.get(pluginName) || {},
+          this.config.user.plugins?.[pluginName] || {}
+        ])
+      }),
+      
+      // Merged widget configuration
+      widgetConfig: computed(() => (widgetId) => {
+        const widget = this.config.widgets.get(widgetId)
+        if (!widget) return {}
+        
+        return this.mergeConfigs([
+          this.config.global.widgets || {},
+          this.config.plugins.get(widget.plugin)?.widgets || {},
+          widget,
+          this.config.user.widgets?.[widgetId] || {}
+        ])
+      }),
+      
+      // Current theme configuration
+      currentTheme: computed(() => {
+        const themeName = this.config.user.theme || this.config.global.theme || 'default'
+        return this.config.themes.get(themeName) || {}
+      })
+    }
+  }
+  
+  // Set configuration with validation
+  setConfig(path, value, options = {}) {
+    const { validate = true, merge = false } = options
+    
+    // Validate if schema exists
+    if (validate && this.hasSchema(path)) {
+      const valid = this.validateConfig(path, value)
+      if (!valid) {
+        throw new Error(`Invalid configuration for path: ${path}`)
+      }
+    }
+    
+    // Navigate to target object
+    const keys = path.split('.')
+    let target = this.config
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i]
+      if (!target[key]) {
+        target[key] = reactive({})
+      }
+      target = target[key]
+    }
+    
+    const finalKey = keys[keys.length - 1]
+    
+    // Set or merge value
+    if (merge && typeof value === 'object' && typeof target[finalKey] === 'object') {
+      Object.assign(target[finalKey], value)
+    } else {
+      target[finalKey] = reactive(value)
+    }
+    
+    // Emit change event
+    this.emit('config:changed', { path, value, timestamp: Date.now() })
+  }
+  
+  // Watch configuration changes
+  watchConfig(path, callback, options = {}) {
+    const watchId = `${path}_${Date.now()}_${Math.random()}`
+    
+    // Create deep watcher for configuration path
+    const stopWatcher = watch(
+      () => this.getConfig(path),
+      (newValue, oldValue) => {
+        callback(newValue, oldValue, path)
+      },
+      { deep: true, ...options }
+    )
+    
+    this.watchers.set(watchId, {
+      path,
+      callback,
+      stopWatcher,
+      created: Date.now()
+    })
+    
+    return {
+      id: watchId,
+      stop: () => {
+        stopWatcher()
+        this.watchers.delete(watchId)
+      }
+    }
+  }
+  
+  // Get configuration value with reactive tracking
+  getConfig(path) {
+    const keys = path.split('.')
+    let current = this.config
+    
+    for (const key of keys) {
+      if (current && typeof current === 'object') {
+        current = current[key]
+      } else {
+        return undefined
+      }
+    }
+    
+    return current
+  }
+  
+  // Configuration merging with proper precedence
+  mergeConfigs(configs) {
+    const result = {}
+    
+    configs.forEach(config => {
+      if (config && typeof config === 'object') {
+        this.deepMerge(result, config)
+      }
+    })
+    
+    return result
+  }
+  
+  deepMerge(target, source) {
+    for (const key in source) {
+      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+        if (!target[key]) target[key] = {}
+        this.deepMerge(target[key], source[key])
+      } else {
+        target[key] = source[key]
+      }
+    }
+  }
+}
+```
+
+### **3.2 Event-Driven Reactive Updates**
+
+#### **Reactive Event Bus with Typed Events**
+```javascript
+class ReactiveEventBus {
+  constructor() {
+    // Event listeners storage
+    this.listeners = reactive(new Map())
+    
+    // Event history for debugging
+    this.eventHistory = reactive([])
+    
+    // Event statistics
+    this.stats = reactive({
+      totalEvents: 0,
+      eventsPerType: new Map(),
+      averageListeners: 0
+    })
+    
+    // Computed properties
+    this.computed = {
+      // Active event types
+      activeEventTypes: computed(() => {
+        return Array.from(this.listeners.keys())
+      }),
+      
+      // Event frequency analysis
+      eventFrequency: computed(() => {
+        const frequency = new Map()
+        this.eventHistory.forEach(event => {
+          const count = frequency.get(event.type) || 0
+          frequency.set(event.type, count + 1)
+        })
+        return frequency
+      })
+    }
+  }
+  
+  // Enhanced event emission with reactivity
+  emit(eventType, payload, options = {}) {
+    const {
+      async = false,
+      priority = 'normal',
+      target = '*',
+      timeout = 5000
+    } = options
+    
+    const event = reactive({
+      id: this.generateEventId(),
+      type: eventType,
+      payload,
+      timestamp: Date.now(),
+      priority,
+      target,
+      handled: false,
+      handlers: []
+```javascript
+    })
+    
+    // Add to event history (with circular buffer)
+    this.eventHistory.push(event)
+    if (this.eventHistory.length > 1000) {
+      this.eventHistory.shift()
+    }
+    
+    // Update statistics
+    this.stats.totalEvents++
+    const typeCount = this.stats.eventsPerType.get(eventType) || 0
+    this.stats.eventsPerType.set(eventType, typeCount + 1)
+    
+    // Get listeners for this event type
+    const listeners = this.listeners.get(eventType) || []
+    
+    if (listeners.length === 0) {
+      console.warn(`No listeners for event: ${eventType}`)
+      return event
+    }
+    
+    // Execute listeners based on priority and async mode
+    if (async) {
+      this.executeListenersAsync(event, listeners, timeout)
+    } else {
+      this.executeListenersSync(event, listeners)
+    }
+    
+    return event
+  }
+  
+  // Reactive event subscription
+  on(eventType, listener, options = {}) {
+    const {
+      once = false,
+      priority = 'normal',
+      filter = null,
+      context = null
+    } = options
+    
+    const listenerId = this.generateListenerId()
+    
+    const listenerWrapper = reactive({
+      id: listenerId,
+      listener,
+      once,
+      priority,
+      filter,
+      context,
+      created: Date.now(),
+      callCount: 0,
+      lastCalled: null,
+      active: true
+    })
+    
+    // Add to listeners map
+    if (!this.listeners.has(eventType)) {
+      this.listeners.set(eventType, reactive([]))
+    }
+    
+    this.listeners.get(eventType).push(listenerWrapper)
+    
+    // Sort by priority
+    this.listeners.get(eventType).sort((a, b) => {
+      const priorities = { high: 3, normal: 2, low: 1 }
+      return priorities[b.priority] - priorities[a.priority]
+    })
+    
+    // Return unsubscribe function
+    return {
+      id: listenerId,
+      unsubscribe: () => this.off(eventType, listenerId)
+    }
+  }
+  
+  // Execute listeners synchronously
+  executeListenersSync(event, listeners) {
+    listeners.forEach(listenerWrapper => {
+      if (!listenerWrapper.active) return
+      
+      // Apply filter if exists
+      if (listenerWrapper.filter && !listenerWrapper.filter(event.payload)) {
+        return
+      }
+      
+      try {
+        // Execute listener
+        const result = listenerWrapper.listener(event.payload, event)
+        
+        // Update listener stats
+        listenerWrapper.callCount++
+        listenerWrapper.lastCalled = Date.now()
+        
+        // Track handler execution
+        event.handlers.push({
+          listenerId: listenerWrapper.id,
+          result,
+          executionTime: Date.now() - event.timestamp
+        })
+        
+        // Remove if once-only listener
+        if (listenerWrapper.once) {
+          listenerWrapper.active = false
+        }
+        
+      } catch (error) {
+        console.error(`Error in event listener for ${event.type}:`, error)
+        event.handlers.push({
+          listenerId: listenerWrapper.id,
+          error: error.message,
+          executionTime: Date.now() - event.timestamp
+        })
+      }
+    })
+    
+    event.handled = true
+  }
+  
+  // Execute listeners asynchronously
+  async executeListenersAsync(event, listeners, timeout) {
+    const promises = listeners
+      .filter(l => l.active)
+      .filter(l => !l.filter || l.filter(event.payload))
+      .map(async (listenerWrapper) => {
+        try {
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Listener timeout')), timeout)
+          })
+          
+          const listenerPromise = Promise.resolve(
+            listenerWrapper.listener(event.payload, event)
+          )
+          
+          const result = await Promise.race([listenerPromise, timeoutPromise])
+          
+          // Update listener stats
+          listenerWrapper.callCount++
+          listenerWrapper.lastCalled = Date.now()
+          
+          // Remove if once-only listener
+          if (listenerWrapper.once) {
+            listenerWrapper.active = false
+          }
+          
+          return {
+            listenerId: listenerWrapper.id,
+            result,
+            executionTime: Date.now() - event.timestamp
+          }
+          
+        } catch (error) {
+          console.error(`Async error in event listener for ${event.type}:`, error)
+          return {
+            listenerId: listenerWrapper.id,
+            error: error.message,
+            executionTime: Date.now() - event.timestamp
+          }
+        }
+      })
+    
+    // Wait for all listeners to complete
+    const results = await Promise.allSettled(promises)
+    event.handlers = results.map(r => r.value || r.reason)
+    event.handled = true
+  }
+}
+```
+
+#### **Reactive Data Flow Manager**
+```javascript
+class ReactiveDataFlowManager {
+  constructor() {
+    // Data flow graph
+    this.dataFlow = reactive({
+      sources: new Map(),      // Data sources
+      transformers: new Map(), // Data transformers
+      consumers: new Map(),    // Data consumers
+      connections: new Map()   // Source -> Consumer connections
+    })
+    
+    // Flow state tracking
+    this.flowState = reactive({
+      activeFlows: new Set(),
+      pausedFlows: new Set(),
+      errorFlows: new Set(),
+      flowStats: new Map()
+    })
+    
+    // Computed flow analysis
+    this.computed = {
+      // Get all active data paths
+      activeDataPaths: computed(() => {
+        const paths = []
+        this.dataFlow.connections.forEach((targets, sourceId) => {
+          targets.forEach(targetId => {
+            if (this.flowState.activeFlows.has(`${sourceId}->${targetId}`)) {
+              paths.push({ source: sourceId, target: targetId })
+            }
+          })
+        })
+        return paths
+      }),
+      
+      // Flow health status
+      flowHealth: computed(() => {
+        const total = this.flowState.activeFlows.size
+        const errors = this.flowState.errorFlows.size
+        return {
+          total,
+          healthy: total - errors,
+          errors,
+          healthPercentage: total > 0 ? ((total - errors) / total) * 100 : 100
+        }
+      })
+    }
+  }
+  
+  // Register data source with reactive updates
+  registerSource(sourceId, sourceConfig) {
+    const source = reactive({
+      id: sourceId,
+      type: sourceConfig.type,
+      config: sourceConfig,
+      status: 'idle',
+      data: null,
+      lastUpdate: null,
+      error: null,
+      subscribers: new Set()
+    })
+    
+    this.dataFlow.sources.set(sourceId, source)
+    
+    // Setup data fetching based on source type
+    this.setupSourceDataFetching(source)
+    
+    return source
+  }
+  
+  // Connect source to consumer with transformation
+  connect(sourceId, consumerId, transformerConfig = null) {
+    const connectionId = `${sourceId}->${consumerId}`
+    
+    // Create reactive connection
+    const connection = reactive({
+      id: connectionId,
+      sourceId,
+      consumerId,
+      transformer: transformerConfig,
+      status: 'active',
+      dataCount: 0,
+      lastDataFlow: null,
+      error: null
+    })
+    
+    // Add to connections map
+    if (!this.dataFlow.connections.has(sourceId)) {
+      this.dataFlow.connections.set(sourceId, reactive(new Set()))
+    }
+    this.dataFlow.connections.get(sourceId).add(consumerId)
+    
+    // Setup reactive data flow
+    this.setupDataFlow(connection)
+    
+    this.flowState.activeFlows.add(connectionId)
+    
+    return connection
+  }
+  
+  // Setup reactive data flow between source and consumer
+  setupDataFlow(connection) {
+    const source = this.dataFlow.sources.get(connection.sourceId)
+    const consumer = this.dataFlow.consumers.get(connection.consumerId)
+    
+    if (!source || !consumer) {
+      console.error('Invalid connection: source or consumer not found')
+      return
+    }
+    
+    // Watch source data changes
+    const stopWatcher = watch(
+      () => source.data,
+      async (newData, oldData) => {
+        if (newData === null || newData === undefined) return
+        
+        try {
+          // Transform data if transformer is configured
+          let transformedData = newData
+          if (connection.transformer) {
+            const transformer = this.dataFlow.transformers.get(connection.transformer.type)
+            if (transformer) {
+              transformedData = await transformer.transform(newData, connection.transformer.config)
+            }
+          }
+          
+          // Send data to consumer
+          await consumer.receiveData(transformedData, {
+            sourceId: connection.sourceId,
+            connectionId: connection.id,
+            timestamp: Date.now()
+          })
+          
+          // Update connection stats
+          connection.dataCount++
+          connection.lastDataFlow = Date.now()
+          connection.status = 'active'
+          connection.error = null
+          
+          // Update flow stats
+          this.updateFlowStats(connection.id, 'success')
+          
+        } catch (error) {
+          console.error(`Data flow error in connection ${connection.id}:`, error)
+          connection.error = error
+          connection.status = 'error'
+          
+          this.flowState.errorFlows.add(connection.id)
+          this.updateFlowStats(connection.id, 'error')
+        }
+      },
+      { deep: true }
+    )
+    
+    // Store watcher for cleanup
+    connection.stopWatcher = stopWatcher
+  }
+  
+  // Setup data fetching for different source types
+  setupSourceDataFetching(source) {
+    switch (source.type) {
+      case 'rest':
+        this.setupRestSource(source)
+        break
+      case 'websocket':
+        this.setupWebSocketSource(source)
+        break
+      case 'polling':
+        this.setupPollingSource(source)
+        break
+    }
+  }
+  
+  setupRestSource(source) {
+    const fetchData = async () => {
+      try {
+        source.status = 'fetching'
+        
+        const response = await fetch(source.config.url, {
+          method: source.config.method || 'GET',
+          headers: source.config.headers || {},
+          ...source.config.options
+        })
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+        
+        const data = await response.json()
+        
+        // Update source data (triggers reactive flow)
+        source.data = data
+        source.lastUpdate = Date.now()
+        source.status = 'active'
+        source.error = null
+        
+      } catch (error) {
+        source.error = error
+        source.status = 'error'
+        console.error(`REST source error for ${source.id}:`, error)
+      }
+    }
+    
+    // Initial fetch
+    fetchData()
+    
+    // Setup interval fetching if configured
+    if (source.config.interval) {
+      const intervalId = setInterval(fetchData, source.config.interval)
+      source.cleanup = () => clearInterval(intervalId)
+    }
+  }
+  
+  setupWebSocketSource(source) {
+    const ws = new WebSocket(source.config.url)
+    
+    ws.onopen = () => {
+      source.status = 'active'
+      source.error = null
+    }
+    
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data)
+        source.data = data
+        source.lastUpdate = Date.now()
+      } catch (error) {
+        console.error(`WebSocket parse error for ${source.id}:`, error)
+      }
+    }
+    
+    ws.onerror = (error) => {
+      source.error = error
+      source.status = 'error'
+    }
+    
+    ws.onclose = () => {
+      source.status = 'disconnected'
+    }
+    
+    source.cleanup = () => {
+      ws.close()
+    }
+  }
+}
+```
+
+---
+
+## **Part 4: Template System & Dynamic Rendering**
+
+### **4.1 Template Compilation & Caching**
+
+#### **Dynamic Template Compiler**
+```javascript
+class DynamicTemplateCompiler {
+  constructor() {
+    this.templateCache = reactive(new Map())
+    this.compiledCache = new Map()
+    this.compilerOptions = {
+      delimiters: ['{{', '}}'],
+      whitespace: 'preserve',
+      comments: true
+    }
+  }
+  
+  // Compile template string to render function
+  async compileTemplate(templateString, options = {}) {
+    const cacheKey = this.generateCacheKey(templateString, options)
+    
+    // Check compiled cache first
+    if (this.compiledCache.has(cacheKey)) {
+      return this.compiledCache.get(cacheKey)
+    }
+    
+    try {
+      // Use Vue's template compiler
+      const { compile } = Vue
+      
+      const compiled = compile(templateString, {
+        ...this.compilerOptions,
+        ...options
+      })
+      
+      // Cache compiled template
+      this.compiledCache.set(cacheKey, compiled)
+      
+      return compiled
+      
+    } catch (error) {
+      console.error('Template compilation error:', error)
+      throw new Error(`Failed to compile template: ${error.message}`)
+    }
+  }
+  
+  // Register template for caching and reuse
+  registerTemplate(name, templateString, options = {}) {
+    const template = reactive({
+      name,
+      template: templateString,
+      options,
+      compiled: null,
+      lastCompiled: null,
+      usageCount: 0
+    })
+    
+    this.templateCache.set(name, template)
+    
+    // Pre-compile template
+    this.compileTemplate(templateString, options)
+      .then(compiled => {
+        template.compiled = compiled
+        template.lastCompiled = Date.now()
+      })
+      .catch(error => {
+        console.error(`Failed to pre-compile template ${name}:`, error)
+      })
+    
+    return template
+  }
+  
+  // Get compiled template by name
+  async getTemplate(name) {
+    const template = this.templateCache.get(name)
+    
+    if (!template) {
+      throw new Error(`Template not found: ${name}`)
+    }
+    
+    template.usageCount++
+    
+    // Compile if not already compiled
+    if (!template.compiled) {
+      template.compiled = await this.compileTemplate(template.template, template.options)
+      template.lastCompiled = Date.now()
+    }
+    
+    return template.compiled
+  }
+  
+  // Dynamic template component
+  createDynamicComponent(templateString, setupFunction = null) {
+    return {
+      template: templateString,
+      
+      setup(props, context) {
+        // Call custom setup if provided
+        if (setupFunction) {
+          return setupFunction(props, context)
+        }
+        
+        // Default setup
+        return {}
+      }
+    }
+  }
+  
+  generateCacheKey(template, options) {
+    return `${template.length}_${JSON.stringify(options)}_${this.hashString(template)}`
+  }
+  
+  hashString(str) {
+    let hash = 0
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash // Convert to 32-bit integer
+    }
+    return hash
+  }
+}
+```
+
+#### **Template-Based Widget System**
+```javascript
+// Widget that renders from template configuration
+const TemplateWidget = {
+  props: {
+    templateConfig: {
+      type: Object,
+      required: true
+    },
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  
+  setup(props) {
+    const templateCompiler = inject('templateCompiler')
+    const compiledTemplate = ref(null)
+    const error = ref(null)
+    const loading = ref(true)
+    
+    // Reactive template data
+    const templateData = computed(() => ({
+      ...props.data,
+      // Add utility functions
+      $formatDate: (date) => new Date(date).toLocaleString(),
+      $formatNumber: (num) => num.toLocaleString(),
+      $formatBytes: (bytes) => {
+        const sizes = ['Bytes', 'KB', 'MB', 'GB']
+        if (bytes === 0) return '0 Bytes'
+        const i = Math.floor(Math.log(bytes) / Math.log(1024))
+        return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i]
+      }
+    }))
+    
+    // Compile template when config changes
+    const compileTemplate = async () => {
+      loading.value = true
+      error.value = null
+      
+      try {
+        let templateString
+        
+        // Get template from different sources
+        if (props.templateConfig.inline) {
+          templateString = props.templateConfig.template
+        } else if (props.templateConfig.url) {
+          const response = await fetch(props.templateConfig.url)
+          templateString = await response.text()
+        } else if (props.templateConfig.name) {
+          templateString = await templateCompiler.getTemplate(props.templateConfig.name)
+        }
+        
+        if (!templateString) {
+          throw new Error('No template source provided')
+        }
+        
+        // Compile template
+        compiledTemplate.value = templateCompiler.createDynamicComponent(
+          templateString,
+          // Custom setup function for template
+          (templateProps, context) => {
+            return {
+              // Provide template data
+              ...templateData.value,
+              
+              // Template-specific methods
+              emit: context.emit,
+              slots: context.slots,
+              
+              // Widget interaction methods
+              refresh: () => {
+                context.emit('refresh')
+              },
+              
+              configure: () => {
+                context.emit('configure')
+              }
+            }
+          }
+        )
+        
+      } catch (err) {
+        error.value = err
+        console.error('Template compilation failed:', err)
+      } finally {
+        loading.value = false
+      }
+    }
+    
+    // Watch for template config changes
+    watch(
+      () => props.templateConfig,
+      compileTemplate,
+      { immediate: true, deep: true }
+    )
+    
+    return {
+      compiledTemplate,
+      error,
+      loading,
+      templateData
+    }
+  },
+  
+  template: `
+    <div class="template-widget">
+      <div v-if="loading" class="loading">
+        Compiling template...
+      </div>
+      
+      <div v-else-if="error" class="error">
+        <h4>Template Error</h4>
+        <p>{{ error.message }}</p>
+      </div>
+      
+      <component
+        v-else-if="compiledTemplate"
+        :is="compiledTemplate"
+        v-bind="templateData"
+        @refresh="$emit('refresh')"
+        @configure="$emit('configure')"
+      />
+    </div>
+  `
+}
+```
+
+### **4.2 Slot System for Flexible Layouts**
+
+#### **Advanced Slot Management**
+```javascript
+// Layout component with dynamic slot management
+const FlexibleLayout = {
+  props: {
+    layoutConfig: {
+      type: Object,
+      required: true
+    }
+  },
+  
+  setup(props, { slots }) {
+    const layoutState = reactive({
+      regions: new Map(),
+      slotContents: new Map(),
+      dragState: null
+    })
+    
+    // Process layout configuration
+    const processedLayout = computed(() => {
+      const regions = []
+      
+      props.layoutConfig.regions.forEach(region => {
+        regions.push({
+          ...region,
+          id: region.id || `region_${Math.random()}`,
+          slots: region.slots || [],
+          style: region.style || {},
+          class: region.class || ''
+        })
+      })
+      
+      return regions
+    })
+    
+    // Slot content management
+    const getSlotContent = (slotName) => {
+      if (slots[slotName]) {
+        return slots[slotName]()
+      }
+      
+      // Check for dynamic slot content
+      const dynamicContent = layoutState.slotContents.get(slotName)
+      if (dynamicContent) {
+        return h(dynamicContent.component, dynamicContent.props)
+      }
+      
+      return null
+    }
+    
+    // Add content to slot dynamically
+    const addToSlot = (slotName, component, props = {}) => {
+      layoutState.slotContents.set(slotName, {
+        component,
+        props,
+        timestamp: Date.now()
+      })
+    }
+    
+    // Remove content from slot
+    const removeFromSlot = (slotName) => {
+      layoutState.slotContents.delete(slotName)
+    }
+    
+    // Drag and drop functionality
+    const handleDragStart = (event, regionId, slotName) => {
+      layoutState.dragState = {
+        sourceRegion: regionId,
+        sourceSlot: slotName,
+        startTime: Date.now()
+      }
+      
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.setData('text/plain', JSON.stringify({
+        regionId,
+        slotName
+      }))
+    }
+    
+    const handleDrop = (event, targetRegion, targetSlot) => {
+      event.preventDefault()
+      
+      const dragData = JSON.parse(event.dataTransfer.getData('text/plain'))
+      
+      if (dragData.regionId !== targetRegion || dragData.slotName !== targetSlot) {
+        // Move slot content
+        const content = layoutState.slotContents.get(dragData.slotName)
+        if (content) {
+          layoutState.slotContents.delete(dragData.slotName)
+          layoutState.slotContents.set(targetSlot, content)
+        }
+        
+        // Emit layout change event
+        emit('layout-changed', {
+          from: { region: dragData.regionId, slot: dragData.slotName },
+          to: { region: targetRegion, slot: targetSlot }
+        })
+      }
+      
+      layoutState.dragState = null
+    }
+    
+    provide('layoutManager', {
+      addToSlot,
+      removeFromSlot,
+      getSlotContent
+    })
+    
+    return {
+      processedLayout,
+      getSlotContent,
+      handleDragStart,
+      handleDrop,
+      layoutState
+    }
+  },
+  
+  template: `
+    <div class="flexible-layout" :class="layoutConfig.class">
+      <div
+        v-for="region in processedLayout"
+        :key="region.id"
+        class="layout-region"
+        :class="region.class"
+        :style="region.style"
+      >
+        <div
+          v-for="slotConfig in region.slots"
+          :key="slotConfig.name"
+          class="layout-slot"
+          :class="slotConfig.class"
+          :style="slotConfig.style"
+          @drop="handleDrop($event, region.id, slotConfig.name)"
+          @dragover.prevent
+        >
+          <!-- Named slot content -->
+          <slot
+            :name="slotConfig.name"
+            :slotConfig="slotConfig"
+            :regionConfig="region"
+          >
+            <!-- Dynamic slot content -->
+            <component
+              v-if="getSlotContent(slotConfig.name)"
+              :is="getSlotContent(slotConfig.name)"
+              draggable="true"
+              @dragstart="handleDragStart($event, region.id, slotConfig.name)"
+            />
+            
+            <!-- Empty slot placeholder -->
+            <div v-else class="empty-slot">
+              {{ slotConfig.placeholder || 'Drop content here' }}
+            </div>
+          </slot>
+        </div>
+      </div>
+    </div>
+  `
+}
+```
+
+#### **Scoped Slot System for Widget Communication**
+```javascript
+// Widget container with scoped slots for data sharing
+const WidgetContainer = {
+  props: {
+    widgetId: String,
+    config: Object
+  },
+  
+  setup(props, { slots }) {
+    const widgetData = ref(null)
+    const widgetError = ref(null)
+    const widgetLoading = ref(false)
+    
+    // Widget state management
+    const widgetState = reactive({
+      initialized: false,
+      visible: true,
+      expanded: true,
+      lastUpdated: null
+    })
+    
+    // Data fetching
+    const fetchData = async () => {
+      widgetLoading.value = true
+      widgetError.value = null
+      
+      try {
+        const dataManager = inject('dataManager')
+        const data = await dataManager.fetchWidgetData(props.widgetId, props.config)
+        
+        widgetData.value = data
+        widgetState.lastUpdated = Date.now()
+        
+      } catch (error) {
+        widgetError.value = error
+      } finally {
+        widgetLoading.value = false
+      }
+    }
+    
+    // Widget actions
+    const widgetActions = {
+      refresh: fetchData,
+      
+      toggle: () => {
+        widgetState.expanded = !widgetState.expanded
+      },
+      
+      hide: () => {
+        widgetState.visible = false
+      },
+      
+      show: () => {
+        widgetState.visible = true
+      },
+      
+      configure: () => {
+        // Emit configuration event
+        emit('configure', props.widgetId)
+      }
+    }
+    
+    // Initialize widget
+    onMounted(() => {
+      fetchData()
+      widgetState.initialized = true
+    })
+    
+    // Provide scoped slot data
+    const slotProps = computed(() => ({
+      // Widget data
+      data: widgetData.value,
+      error: widgetError.value,
+      loading: widgetLoading.value,
+      
+      // Widget state
+      state: widgetState,
+      
+      // Widget actions
+      actions: widgetActions,
+      
+      // Widget configuration
+      config: props.config,
+      
+      // Utility functions
+      utils: {
+        formatDate: (date) => new Date(date).toLocaleString(),
+        formatNumber: (num) => num?.toLocaleString() || '0',
+        isEmpty: (value) => value == null || value === '' || 
+                           (Array.isArray(value) && value.length === 0)
+      }
+    }))
+    
+    return {
+      slotProps,
+      widgetState,
+      widgetActions
+    }
+  },
+  
+  template: `
+    <div 
+      class="widget-container" 
+      :class="{
+        'widget-hidden': !widgetState.visible,
+        'widget-collapsed': !widgetState.expanded,
+        'widget-loading': slotProps.loading,
+        'widget-error': slotProps.error
+      }"
+    >
+      <!-- Widget Header Slot -->
+      <div class="widget-header">
+        <slot 
+          name="header" 
+          v-bind="slotProps"
+        >
+          <!-- Default header -->
+          <h3>{{ config.title || 'Widget' }}</h3>
+          <div class="widget-controls">
+            <button @click="widgetActions.refresh" title="Refresh">
+              ↻
+            </button>
+            <button @click="widgetActions.toggle" title="Toggle">
+              {{ widgetState.expanded ? '−' : '+' }}
+            </button>
+            <button @click="widgetActions.configure" title="Configure">
+              ⚙
+            </button>
+          </div>
+        </slot>
+      </div>
+      
+      <!-- Widget Content Slot -->
+      <div class="widget-content" v-show="widgetState.expanded">
+        <slot 
+          name="content" 
+          v-bind="slotProps"
+        >
+          <!-- Default content based on data type -->
+          <div v-if="slotProps.loading" class="loading">
+            Loading...
+          </div>
+          
+          <div v-else-if="slotProps.error" class="error">
+            {{ slotProps.error.message }}
+          </div>
+          
+          <div v-else-if="slotProps.data" class="data">
+            <pre>{{ JSON.stringify(slotProps.data, null, 2) }}</pre>
+          </div>
+          
+          <div v-else class="no-data">
+            No data available
+          </div>
+        </slot>
+      </div>
+      
+      <!-- Widget Footer Slot -->
+      <div class="widget-footer">
+        <slot 
+          name="footer" 
+          v-bind="slotProps"
+        >
+          <!-- Default footer -->
+          <small v-if="widgetState.lastUpdated">
+            Last updated: {{ new Date(widgetState.lastUpdated).toLocaleTimeString() }}
+          </small>
+        </slot>
+      </div>
+    </div>
+  `
+}
+```
+
+---
+
+## **Part 5: State Management Patterns**
+
+### **5.1 Global State with Provide/Inject**
+
+#### **Application State Provider**
+```javascript
+// Global application state management
+class ApplicationStateManager {
+  constructor() {
+    // Core application state
+    this.state = reactive({
+      // Application lifecycle
+      lifecycle: {
+        phase: 'initializing', // initializing, loading, ready, error
+        startTime: Date.now(),
+        initializationSteps: [],
+        errors: []
+      },
+      
+      // Plugin management
+      plugins: {
+        registry: new Map(),
+        loaded: new Map(),
+        failed: new Map(),
+        dependencies: new Map()
+      },
+      
+      // Configuration state
+      configuration: {
+        global: {},
+        plugins: new Map(),
+        widgets: new Map(),
+        user: {},
+        themes: new Map()
+      },
+      
+      // UI state
+      ui: {
+        theme: 'default',
+        layout: 'grid',
+        sidebarOpen: true,
+        fullscreen: false,
+        activeModal: null,
+        notifications: []
+      },
+      
+      // Data state
+      data: {
+        sources: new Map(),
+        cache: new Map(),
+        subscriptions: new Map(),
+        liveConnections: new Set()
+      },
+      
+      // Performance monitoring
+      performance: {
+        metrics: new Map(),
+        alerts: [],
+        thresholds: {
+          memoryUsage: 0.8,
+          renderTime: 16, // 60fps target
+          dataFetchTime: 5000
+        }
+      }
+    })
+    
+    // Computed state derivations
+    this.computed = {
+      // Application readiness
+      isReady: computed(() => 
+        this.state.lifecycle.phase === 'ready'
+      ),
+      
+      // Plugin statistics
+      pluginStats: computed(() => ({
+        total: this.state.plugins.registry.size,
+        loaded: this.state.plugins.loaded.size,
+        failed: this.state.plugins.failed.size,
+        loadRate: this.state.plugins.registry.size > 0 
+          ? this.state.plugins.loaded.size / this.state.plugins.registry.size 
+          : 0
+      })),
+      
+      // Active data connections
+      activeDataSources: computed(() =>
+        Array.from(this.state.data.sources.values())
+          .filter(source => source.status === 'connected')
+      ),
+      
+      // Current theme configuration
+      currentTheme: computed(() =>
+        this.state.configuration.themes.get(this.state.ui.theme) || {}
+      ),
+      
+      // Performance health
+      performanceHealth: computed(() => {
+        const metrics = Array.from(this.state.performance.metrics.values())
+```javascript
+        const alerts = this.state.performance.alerts
+        
+        return {
+          healthy: alerts.length === 0,
+          alertCount: alerts.length,
+          averageRenderTime: this.calculateAverageMetric(metrics, 'renderTime'),
+          memoryUsage: this.getCurrentMemoryUsage(),
+          score: this.calculatePerformanceScore(metrics, alerts)
+        }
+      })
+    }
+    
+    // State mutation methods
+    this.mutations = {
+      // Lifecycle mutations
+      setLifecyclePhase: (phase) => {
+        this.state.lifecycle.phase = phase
+        this.state.lifecycle.initializationSteps.push({
+          phase,
+          timestamp: Date.now()
+        })
+      },
+      
+      addLifecycleError: (error) => {
+        this.state.lifecycle.errors.push({
+          error,
+          timestamp: Date.now(),
+          phase: this.state.lifecycle.phase
+        })
+      },
+      
+      // Plugin mutations
+      registerPlugin: (pluginId, pluginInfo) => {
+        this.state.plugins.registry.set(pluginId, reactive({
+          ...pluginInfo,
+          registeredAt: Date.now(),
+          status: 'registered'
+        }))
+      },
+      
+      setPluginLoaded: (pluginId, pluginInstance) => {
+        this.state.plugins.loaded.set(pluginId, pluginInstance)
+        const plugin = this.state.plugins.registry.get(pluginId)
+        if (plugin) {
+          plugin.status = 'loaded'
+          plugin.loadedAt = Date.now()
+        }
+      },
+      
+      setPluginFailed: (pluginId, error) => {
+        this.state.plugins.failed.set(pluginId, {
+          error,
+          timestamp: Date.now()
+        })
+        const plugin = this.state.plugins.registry.get(pluginId)
+        if (plugin) {
+          plugin.status = 'failed'
+          plugin.error = error
+        }
+      },
+      
+      // Configuration mutations
+      updateGlobalConfig: (path, value) => {
+        this.setNestedValue(this.state.configuration.global, path, value)
+      },
+      
+      updatePluginConfig: (pluginId, config) => {
+        this.state.configuration.plugins.set(pluginId, reactive(config))
+      },
+      
+      updateWidgetConfig: (widgetId, config) => {
+        this.state.configuration.widgets.set(widgetId, reactive(config))
+      },
+      
+      // UI mutations
+      setTheme: (themeName) => {
+        this.state.ui.theme = themeName
+      },
+      
+      setLayout: (layoutType) => {
+        this.state.ui.layout = layoutType
+      },
+      
+      toggleSidebar: () => {
+        this.state.ui.sidebarOpen = !this.state.ui.sidebarOpen
+      },
+      
+      addNotification: (notification) => {
+        this.state.ui.notifications.push(reactive({
+          id: this.generateId(),
+          ...notification,
+          timestamp: Date.now()
+        }))
+      },
+      
+      removeNotification: (notificationId) => {
+        const index = this.state.ui.notifications.findIndex(n => n.id === notificationId)
+        if (index > -1) {
+          this.state.ui.notifications.splice(index, 1)
+        }
+      },
+      
+      // Data mutations
+      addDataSource: (sourceId, sourceConfig) => {
+        this.state.data.sources.set(sourceId, reactive({
+          id: sourceId,
+          ...sourceConfig,
+          status: 'idle',
+          lastUpdate: null,
+          error: null
+        }))
+      },
+      
+      updateDataSourceStatus: (sourceId, status, error = null) => {
+        const source = this.state.data.sources.get(sourceId)
+        if (source) {
+          source.status = status
+          source.error = error
+          source.lastUpdate = Date.now()
+        }
+      },
+      
+      // Performance mutations
+      addPerformanceMetric: (metricName, value) => {
+        if (!this.state.performance.metrics.has(metricName)) {
+          this.state.performance.metrics.set(metricName, reactive([]))
+        }
+        
+        const metrics = this.state.performance.metrics.get(metricName)
+        metrics.push({
+          value,
+          timestamp: Date.now()
+        })
+        
+        // Keep only last 100 metrics
+        if (metrics.length > 100) {
+          metrics.shift()
+        }
+        
+        // Check thresholds
+        this.checkPerformanceThresholds(metricName, value)
+      }
+    }
+    
+    // Setup watchers for side effects
+    this.setupWatchers()
+  }
+  
+  // Actions (async operations)
+  actions = {
+    // Initialize application
+    initialize: async () => {
+      try {
+        this.mutations.setLifecyclePhase('loading')
+        
+        // Load configuration
+        await this.actions.loadConfiguration()
+        
+        // Initialize plugins
+        await this.actions.initializePlugins()
+        
+        // Setup data sources
+        await this.actions.setupDataSources()
+        
+        // Complete initialization
+        this.mutations.setLifecyclePhase('ready')
+        
+      } catch (error) {
+        this.mutations.addLifecycleError(error)
+        this.mutations.setLifecyclePhase('error')
+        throw error
+      }
+    },
+    
+    // Load application configuration
+    loadConfiguration: async () => {
+      try {
+        // Load from multiple sources and merge
+        const sources = [
+          '/config/app.json',
+          '/config/themes.json',
+          '/config/plugins.json'
+        ]
+        
+        const configs = await Promise.all(
+          sources.map(async (url) => {
+            try {
+              const response = await fetch(url)
+              return response.ok ? await response.json() : {}
+            } catch {
+              return {}
+            }
+          })
+        )
+        
+        // Merge configurations
+        const [appConfig, themesConfig, pluginsConfig] = configs
+        
+        this.mutations.updateGlobalConfig('', appConfig)
+        
+        // Load themes
+        Object.entries(themesConfig.themes || {}).forEach(([name, theme]) => {
+          this.state.configuration.themes.set(name, reactive(theme))
+        })
+        
+        // Load plugin configurations
+        Object.entries(pluginsConfig.plugins || {}).forEach(([pluginId, config]) => {
+          this.mutations.updatePluginConfig(pluginId, config)
+        })
+        
+      } catch (error) {
+        console.error('Configuration loading failed:', error)
+        throw error
+      }
+    },
+    
+    // Initialize all plugins
+    initializePlugins: async () => {
+      const pluginManager = inject('pluginManager')
+      
+      try {
+        // Discover plugins
+        const discoveredPlugins = await pluginManager.discoverPlugins()
+        
+        // Register discovered plugins
+        discoveredPlugins.forEach(plugin => {
+          this.mutations.registerPlugin(plugin.id, plugin)
+        })
+        
+        // Load plugins in dependency order
+        const loadOrder = this.calculatePluginLoadOrder()
+        
+        for (const pluginId of loadOrder) {
+          try {
+            const pluginInstance = await pluginManager.loadPlugin(pluginId)
+            this.mutations.setPluginLoaded(pluginId, pluginInstance)
+          } catch (error) {
+            this.mutations.setPluginFailed(pluginId, error)
+            console.error(`Plugin ${pluginId} failed to load:`, error)
+          }
+        }
+        
+      } catch (error) {
+        console.error('Plugin initialization failed:', error)
+        throw error
+      }
+    },
+    
+    // Setup data sources
+    setupDataSources: async () => {
+      const dataSourceConfigs = this.state.configuration.global.dataSources || {}
+      
+      for (const [sourceId, config] of Object.entries(dataSourceConfigs)) {
+        try {
+          this.mutations.addDataSource(sourceId, config)
+          
+          // Initialize data source
+          const dataManager = inject('dataManager')
+          await dataManager.initializeSource(sourceId, config)
+          
+          this.mutations.updateDataSourceStatus(sourceId, 'connected')
+          
+        } catch (error) {
+          this.mutations.updateDataSourceStatus(sourceId, 'error', error)
+          console.error(`Data source ${sourceId} failed to initialize:`, error)
+        }
+      }
+    }
+  }
+  
+  // Getters for computed state access
+  getters = {
+    // Get plugin by ID
+    getPlugin: (pluginId) => {
+      return this.state.plugins.loaded.get(pluginId) || 
+             this.state.plugins.registry.get(pluginId)
+    },
+    
+    // Get configuration by path
+    getConfig: (path) => {
+      return this.getNestedValue(this.state.configuration.global, path)
+    },
+    
+    // Get plugin configuration
+    getPluginConfig: (pluginId) => {
+      return this.state.configuration.plugins.get(pluginId) || {}
+    },
+    
+    // Get widget configuration
+    getWidgetConfig: (widgetId) => {
+      return this.state.configuration.widgets.get(widgetId) || {}
+    },
+    
+    // Get data source
+    getDataSource: (sourceId) => {
+      return this.state.data.sources.get(sourceId)
+    },
+    
+    // Get performance metrics
+    getPerformanceMetrics: (metricName) => {
+      return this.state.performance.metrics.get(metricName) || []
+    }
+  }
+  
+  // Setup reactive watchers
+  setupWatchers() {
+    // Watch for theme changes and apply CSS variables
+    watch(
+      () => this.state.ui.theme,
+      (newTheme) => {
+        const themeConfig = this.state.configuration.themes.get(newTheme)
+        if (themeConfig && themeConfig.variables) {
+          this.applyThemeVariables(themeConfig.variables)
+        }
+      }
+    )
+    
+    // Watch for plugin failures and show notifications
+    watch(
+      () => this.state.plugins.failed.size,
+      (newSize, oldSize) => {
+        if (newSize > oldSize) {
+          const lastFailed = Array.from(this.state.plugins.failed.entries()).pop()
+          if (lastFailed) {
+            this.mutations.addNotification({
+              type: 'error',
+              title: 'Plugin Failed',
+              message: `Plugin ${lastFailed[0]} failed to load: ${lastFailed[1].error.message}`
+            })
+          }
+        }
+      }
+    )
+    
+    // Watch for performance alerts
+    watch(
+      () => this.state.performance.alerts,
+      (newAlerts, oldAlerts) => {
+        const newAlertsCount = newAlerts.length
+        const oldAlertsCount = oldAlerts ? oldAlerts.length : 0
+        
+        if (newAlertsCount > oldAlertsCount) {
+          const latestAlert = newAlerts[newAlerts.length - 1]
+          this.mutations.addNotification({
+            type: 'warning',
+            title: 'Performance Alert',
+            message: latestAlert.message
+          })
+        }
+      },
+      { deep: true }
+    )
+  }
+  
+  // Utility methods
+  setNestedValue(obj, path, value) {
+    const keys = path.split('.')
+    let current = obj
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i]
+      if (!current[key] || typeof current[key] !== 'object') {
+        current[key] = reactive({})
+      }
+      current = current[key]
+    }
+    
+    current[keys[keys.length - 1]] = value
+  }
+  
+  getNestedValue(obj, path) {
+    if (!path) return obj
+    
+    const keys = path.split('.')
+    let current = obj
+    
+    for (const key of keys) {
+      if (current && typeof current === 'object' && key in current) {
+        current = current[key]
+      } else {
+        return undefined
+      }
+    }
+    
+    return current
+  }
+  
+  calculatePluginLoadOrder() {
+    // Topological sort based on plugin dependencies
+    const plugins = Array.from(this.state.plugins.registry.keys())
+    const visited = new Set()
+    const order = []
+    
+    const visit = (pluginId) => {
+      if (visited.has(pluginId)) return
+      
+      visited.add(pluginId)
+      
+      const plugin = this.state.plugins.registry.get(pluginId)
+      const dependencies = plugin?.dependencies || []
+      
+      dependencies.forEach(depId => {
+        if (this.state.plugins.registry.has(depId)) {
+          visit(depId)
+        }
+      })
+      
+      order.push(pluginId)
+    }
+    
+    plugins.forEach(visit)
+    
+    return order
+  }
+  
+  checkPerformanceThresholds(metricName, value) {
+    const thresholds = this.state.performance.thresholds
+    
+    let alertMessage = null
+    
+    switch (metricName) {
+      case 'memoryUsage':
+        if (value > thresholds.memoryUsage) {
+          alertMessage = `High memory usage: ${(value * 100).toFixed(1)}%`
+        }
+        break
+        
+      case 'renderTime':
+        if (value > thresholds.renderTime) {
+          alertMessage = `Slow rendering: ${value.toFixed(1)}ms`
+        }
+        break
+        
+      case 'dataFetchTime':
+        if (value > thresholds.dataFetchTime) {
+          alertMessage = `Slow data fetch: ${value.toFixed(0)}ms`
+        }
+        break
+    }
+    
+    if (alertMessage) {
+      const existingAlert = this.state.performance.alerts.find(
+        alert => alert.metric === metricName
+      )
+      
+      if (!existingAlert) {
+        this.state.performance.alerts.push({
+          id: this.generateId(),
+          metric: metricName,
+          message: alertMessage,
+          value,
+          threshold: thresholds[metricName],
+          timestamp: Date.now()
+        })
+      }
+    }
+  }
+  
+  applyThemeVariables(variables) {
+    const root = document.documentElement
+    
+    Object.entries(variables).forEach(([property, value]) => {
+      root.style.setProperty(`--${property}`, value)
+    })
+  }
+  
+  generateId() {
+    return `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  }
+}
+```
+
+#### **State Provider Setup**
+```javascript
+// Application state provider component
+const StateProvider = {
+  setup(_, { slots }) {
+    // Create global state manager
+    const stateManager = new ApplicationStateManager()
+    
+    // Provide state manager to all child components
+    provide('appState', stateManager.state)
+    provide('appComputed', stateManager.computed)
+    provide('appMutations', stateManager.mutations)
+    provide('appActions', stateManager.actions)
+    provide('appGetters', stateManager.getters)
+    provide('stateManager', stateManager)
+    
+    // Initialize application on mount
+    onMounted(async () => {
+      try {
+        await stateManager.actions.initialize()
+      } catch (error) {
+        console.error('Application initialization failed:', error)
+      }
+    })
+    
+    // Cleanup on unmount
+    onUnmounted(() => {
+      // Cleanup any resources, timers, etc.
+      stateManager.cleanup?.()
+    })
+    
+    return () => slots.default?.()
+  }
+}
+
+// Composable for accessing application state
+function useAppState() {
+  const appState = inject('appState')
+  const appComputed = inject('appComputed')
+  const appMutations = inject('appMutations')
+  const appActions = inject('appActions')
+  const appGetters = inject('appGetters')
+  
+  if (!appState) {
+    throw new Error('useAppState must be called within StateProvider')
+  }
+  
+  return {
+    // Reactive state (read-only)
+    state: readonly(appState),
+    
+    // Computed properties
+    computed: appComputed,
+    
+    // State mutations
+    mutations: appMutations,
+    
+    // Async actions
+    actions: appActions,
+    
+    // Getters
+    getters: appGetters
+  }
+}
+
+// Composable for plugin-specific state
+function usePluginState(pluginId) {
+  const { state, mutations, getters } = useAppState()
+  
+  // Plugin-specific state slice
+  const pluginState = computed(() => ({
+    info: getters.getPlugin(pluginId),
+    config: getters.getPluginConfig(pluginId),
+    status: state.plugins.registry.get(pluginId)?.status || 'unknown',
+    error: state.plugins.failed.get(pluginId)?.error || null
+  }))
+  
+  // Plugin-specific mutations
+  const pluginMutations = {
+    updateConfig: (config) => mutations.updatePluginConfig(pluginId, config),
+    setFailed: (error) => mutations.setPluginFailed(pluginId, error)
+  }
+  
+  return {
+    pluginState,
+    pluginMutations
+  }
+}
+```
+
+### **5.2 Widget State Management**
+
+#### **Widget State Composable**
+```javascript
+// Composable for widget state management
+function useWidgetState(widgetId, initialConfig = {}) {
+  const { mutations, getters } = useAppState()
+  
+  // Widget-specific reactive state
+  const widgetState = reactive({
+    // Core widget properties
+    id: widgetId,
+    type: initialConfig.type || 'generic',
+    title: initialConfig.title || 'Widget',
+    
+    // Widget lifecycle state
+    lifecycle: {
+      phase: 'initializing', // initializing, loading, ready, error, destroyed
+      initialized: false,
+      mounted: false,
+      error: null
+    },
+    
+    // Widget UI state
+    ui: {
+      visible: true,
+      expanded: true,
+      position: initialConfig.position || { x: 0, y: 0 },
+      size: initialConfig.size || { width: 300, height: 200 },
+      zIndex: 1,
+      dragging: false,
+      resizing: false
+    },
+    
+    // Widget data state
+    data: {
+      current: null,
+      previous: null,
+      loading: false,
+      error: null,
+      lastUpdate: null,
+      updateCount: 0
+    },
+    
+    // Widget configuration
+    config: reactive({ ...initialConfig }),
+    
+    // Widget interactions
+    interactions: {
+      clickCount: 0,
+      lastInteraction: null,
+      hoverTime: 0
+    }
+  })
+  
+  // Widget computed properties
+  const widgetComputed = {
+    // Widget readiness
+    isReady: computed(() => 
+      widgetState.lifecycle.phase === 'ready' && 
+      !widgetState.data.loading
+    ),
+    
+    // Has valid data
+    hasData: computed(() => 
+      widgetState.data.current !== null && 
+      widgetState.data.current !== undefined
+    ),
+    
+    // Widget dimensions
+    dimensions: computed(() => ({
+      width: widgetState.ui.size.width,
+      height: widgetState.ui.size.height,
+      aspectRatio: widgetState.ui.size.width / widgetState.ui.size.height
+    })),
+    
+    // Widget status for display
+    displayStatus: computed(() => {
+      if (widgetState.lifecycle.error) return 'error'
+      if (widgetState.data.loading) return 'loading'
+      if (!widgetComputed.hasData.value) return 'no-data'
+      if (widgetComputed.isReady.value) return 'ready'
+      return 'initializing'
+    })
+  }
+  
+  // Widget actions
+  const widgetActions = {
+    // Initialize widget
+    initialize: async () => {
+      try {
+        widgetState.lifecycle.phase = 'loading'
+        
+        // Load widget configuration from global state
+        const globalConfig = getters.getWidgetConfig(widgetId)
+        Object.assign(widgetState.config, globalConfig)
+        
+        // Setup data source if configured
+        if (widgetState.config.dataSource) {
+          await widgetActions.setupDataSource()
+        }
+        
+        widgetState.lifecycle.phase = 'ready'
+        widgetState.lifecycle.initialized = true
+        
+      } catch (error) {
+        widgetState.lifecycle.error = error
+        widgetState.lifecycle.phase = 'error'
+        console.error(`Widget ${widgetId} initialization failed:`, error)
+      }
+    },
+    
+    // Setup data source connection
+    setupDataSource: async () => {
+      const dataManager = inject('dataManager')
+      const sourceConfig = widgetState.config.dataSource
+      
+      if (!sourceConfig) return
+      
+      try {
+        // Subscribe to data updates
+        const subscription = await dataManager.subscribe(
+          sourceConfig.id || sourceConfig.url,
+          (newData) => {
+            widgetActions.updateData(newData)
+          },
+          {
+            interval: sourceConfig.refreshInterval || 5000,
+            transform: sourceConfig.transform
+          }
+        )
+        
+        // Store subscription for cleanup
+        widgetState.subscription = subscription
+        
+      } catch (error) {
+        widgetState.data.error = error
+        console.error(`Widget ${widgetId} data source setup failed:`, error)
+      }
+    },
+    
+    // Update widget data
+    updateData: (newData) => {
+      widgetState.data.previous = widgetState.data.current
+      widgetState.data.current = newData
+      widgetState.data.lastUpdate = Date.now()
+      widgetState.data.updateCount++
+      widgetState.data.error = null
+      
+      // Emit data update event
+      const eventBus = inject('eventBus')
+      eventBus.emit('widget:data:updated', {
+        widgetId,
+        data: newData,
+        timestamp: widgetState.data.lastUpdate
+      })
+    },
+    
+    // Update widget configuration
+    updateConfig: (newConfig, persist = true) => {
+      // Merge new configuration
+      Object.assign(widgetState.config, newConfig)
+      
+      // Persist to global state if requested
+      if (persist) {
+        mutations.updateWidgetConfig(widgetId, widgetState.config)
+      }
+      
+      // Emit configuration change event
+      const eventBus = inject('eventBus')
+      eventBus.emit('widget:config:changed', {
+        widgetId,
+        config: widgetState.config
+      })
+    },
+    
+    // Refresh widget data
+    refresh: async () => {
+      if (!widgetState.config.dataSource) return
+      
+      widgetState.data.loading = true
+      widgetState.data.error = null
+      
+      try {
+        const dataManager = inject('dataManager')
+        const newData = await dataManager.fetchData(
+          widgetState.config.dataSource.id || widgetState.config.dataSource.url
+        )
+        
+        widgetActions.updateData(newData)
+        
+      } catch (error) {
+        widgetState.data.error = error
+        console.error(`Widget ${widgetId} data refresh failed:`, error)
+      } finally {
+        widgetState.data.loading = false
+      }
+    },
+    
+    // Widget UI actions
+    toggle: () => {
+      widgetState.ui.expanded = !widgetState.ui.expanded
+    },
+    
+    hide: () => {
+      widgetState.ui.visible = false
+    },
+    
+    show: () => {
+      widgetState.ui.visible = true
+    },
+    
+    move: (newPosition) => {
+      widgetState.ui.position = { ...newPosition }
+    },
+    
+    resize: (newSize) => {
+      widgetState.ui.size = { ...newSize }
+    },
+    
+    // Track user interactions
+    trackInteraction: (interactionType = 'click') => {
+      widgetState.interactions.lastInteraction = Date.now()
+      
+      if (interactionType === 'click') {
+        widgetState.interactions.clickCount++
+      }
+    },
+    
+    // Cleanup widget resources
+    destroy: () => {
+      // Unsubscribe from data updates
+      if (widgetState.subscription) {
+        widgetState.subscription.unsubscribe()
+      }
+      
+      // Mark as destroyed
+      widgetState.lifecycle.phase = 'destroyed'
+      
+      // Emit destruction event
+      const eventBus = inject('eventBus')
+      eventBus.emit('widget:destroyed', { widgetId })
+    }
+  }
+  
+  // Setup watchers for side effects
+  const setupWatchers = () => {
+    // Watch for configuration changes that require data source updates
+    watch(
+      () => widgetState.config.dataSource,
+      async (newDataSource, oldDataSource) => {
+        if (JSON.stringify(newDataSource) !== JSON.stringify(oldDataSource)) {
+          // Cleanup old subscription
+          if (widgetState.subscription) {
+            widgetState.subscription.unsubscribe()
+          }
+          
+          // Setup new data source
+          if (newDataSource) {
+            await widgetActions.setupDataSource()
+          }
+        }
+      },
+      { deep: true }
+    )
+    
+    // Watch for visibility changes
+    watch(
+      () => widgetState.ui.visible,
+      (isVisible) => {
+        const eventBus = inject('eventBus')
+        eventBus.emit('widget:visibility:changed', {
+          widgetId,
+          visible: isVisible
+        })
+      }
+    )
+  }
+  
+  // Initialize on creation
+  onMounted(async () => {
+    widgetState.lifecycle.mounted = true
+    setupWatchers()
+    await widgetActions.initialize()
+  })
+  
+  // Cleanup on unmount
+  onUnmounted(() => {
+    widgetActions.destroy()
+  })
+  
+  return {
+    // Reactive state (read-only for external use)
+    state: readonly(widgetState),
+    
+    // Computed properties
+    computed: widgetComputed,
+    
+    // Actions
+    actions: widgetActions
+  }
+}
+```
+
+This comprehensive Vue.js concepts breakdown covers:
+
+1. **Reactive System**: Deep dive into Vue's reactivity for plugin systems
+2. **Composition API**: Advanced patterns for plugin development
+3. **Dynamic Components**: Runtime component loading and registration
+4. **Template System**: Dynamic template compilation and rendering
+5. **State Management**: Global and widget-specific state patterns
+
+Each section provides practical implementation patterns specifically tailored for the monitoring app's requirements of being plugin-based, configuration-driven, and highly dynamic.
